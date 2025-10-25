@@ -7,3 +7,5 @@ Celem tego projektu jest analiza danych z różnych źródeł
 julia
 
 hej
+
+video
