@@ -5,3 +5,5 @@ Projekt zespołowy - Analiza Danych 2025/2026
 Celem tego projektu jest analiza danych z różnych źródeł
 
 julia
+
+hej
