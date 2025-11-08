@@ -1,0 +1,18 @@
+---
+title: ""
+date: "`r Sys.Date()`"
+output:
+  rmdformats::downcute:
+    self_contained: true
+    default_style: "light"
+    downcute_theme: "default"
+---
+
+
+```{r setup, include=FALSE}
+## Global options
+knitr::opts_chunk$set(cache = TRUE)
+library(tidyverse)
+library(readr)
+dane_nieruchomosci <- read_csv("dane_nieruchomosci/apartments_pl_2024_06.csv")
+```
