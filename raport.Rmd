@@ -16,3 +16,6 @@ library(tidyverse)
 library(readr)
 dane_nieruchomosci <- read_csv("dane_nieruchomosci/apartments_pl_2024_06.csv")
 ```
+
+# Wstęp
+
