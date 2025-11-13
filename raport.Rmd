@@ -51,8 +51,8 @@ poziom cen tuż po okresie dynamicznych wzrostów z poprzednich miesięcy.
 Zbiór danych zawiera miesięczną kolekcję ofert sprzedaży z czerwca 2024
 roku z 15 największych polskich miast.
 
-Zbiór danych zawiera `r nrow(apartments_pl_2024_06.csv)` obserwacji i
-`r ncol(apartments_pl_2024_06.csv)` zmiennych.
+Zbiór danych zawiera `r nrow("apartments_pl_2024_06.csv")` obserwacji i
+`r ncol("apartments_pl_2024_06.csv")` zmiennych.
 
 Poniżej znajduje się opis najważniejszych zmiennych:
 
