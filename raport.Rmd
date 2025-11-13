@@ -29,3 +29,22 @@ Rynek nieruchomości jest jednym z najważniejszych sektorów polskiej gospodark
 6. Jakie znaczenie mają udogodnienia, takie jak balkon, winda czy miejsce parkingowe, dla poziomu ceny ofertowej?
 7. Jak typ budynku wpływa na poziom cen?
 8. Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
+
+# Opis danych 
+Zbiór danych zawiera miesięczną kolekcję ofert sprzedaży z czerwca 2024 roku z 15 największych polskich miast.
+
+Zbiór danych zawiera `r nrow(apartments_pl_2024_06)` obserwacji i `r ncol(apartments_pl_2024_06)` zmiennych.
+
+Poniżej znajduje się opis najważniejszych zmiennych:
+-`city`: Nazwa miasta, w którym znajduje się nieruchomość,
+-`type`: Typ budynku,
+-`squareMeters`: Wielkość mieszkania w metrach kwadratowych,
+-`rooms`: Liczba pokoi w mieszkaniu,
+-`buildYear`: Rok, w którym budynek został zbudowany,
+-`centreDistance`: Odległość od centrum miasta w kilometrach,
+-`poiCount`: Liczba interesujących miejsc (POI) w promieniu 500m,
+-`[poiName]Distance`: Odległość do najbliższego konkretnego punktu POI,
+-`własność`: Rodzaj własności nieruchomości,
+-`condition`: Stan mieszkania,
+-`has[features]`: Zmienne binarne określające kluczowe udogodnienia,
+-`cena`: Cena ofertowa sprzedaży w złotych polskich.
