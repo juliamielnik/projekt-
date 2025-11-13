@@ -19,3 +19,13 @@ dane_nieruchomosci <- read_csv("dane_nieruchomosci/apartments_pl_2024_06.csv")
 
 # Wstęp
 Rynek nieruchomości jest jednym z najważniejszych sektorów polskiej gospodarki, decyduje o możliwościach zakupu mieszkania przez Polaków, atrakcyjności inwestycji oraz kondycji całej branży budowlanej. W 2024 roku, dzięki stabilizacji stóp procentowych, rosnącym płacom i niskiej inflacji, zdolność kredytowa gospodarstw domowych wyraźnie się poprawiła. Niniejszy projekt koncentruje się wyłącznie na danych z czerwca 2024 roku, dzięki czemu pozwala dokładnie uchwycić aktualny poziom cen tuż po okresie dynamicznych wzrostów z poprzednich miesięcy.
+
+## Pytania badawcze
+1. Jak kształtują się średnie ceny mieszkań w 15 największych miastach Polski?
+2. Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
+3. W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
+4. Jak odległość od centrum miasta wpływa na poziom cen mieszkań?
+5. W jaki sposób stan techniczny mieszkania przekłada się na jego wartość rynkową?
+6. Jakie znaczenie mają udogodnienia, takie jak balkon, winda czy miejsce parkingowe, dla poziomu ceny ofertowej?
+7. Jak typ budynku wpływa na poziom cen?
+8. Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
