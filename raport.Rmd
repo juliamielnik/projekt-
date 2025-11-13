@@ -54,16 +54,29 @@ roku z 15 największych polskich miast.
 Zbiór danych zawiera `r nrow(apartments_pl_2024_06)` obserwacji i
 `r ncol(apartments_pl_2024_06)` zmiennych.
 
-Poniżej znajduje się opis najważniejszych zmiennych: 
-- `city`: Nazwa miasta, w którym znajduje się nieruchomość, 
-- `type`: Typ budynku,
-- `squareMeters`: Wielkość mieszkania w metrach kwadratowych, 
-- `rooms`: Liczba pokoi w mieszkaniu, 
-- `buildYear`: Rok, w którym budynek został zbudowany, 
-- `centreDistance`: Odległość od centrum miasta w kilometrach,
-- `poiCount`: Liczba interesujących miejsc (POI) w promieniu 500m,
-- `[poiName]Distance`: Odległość do najbliższego konkretnego punktu POI,
-- `własność`: Rodzaj własności nieruchomości, 
-- `condition`: Stan mieszkania, 
-- `has[features]`: Zmienne binarne określające kluczowe udogodnienia, 
-- `cena`: Cena ofertowa sprzedaży w złotych polskich.
+Poniżej znajduje się opis najważniejszych zmiennych:
+
+-   `city`: Nazwa miasta, w którym znajduje się nieruchomość,
+
+-   `type`: Typ budynku,
+
+-   `squareMeters`: Wielkość mieszkania w metrach kwadratowych,
+
+-   `rooms`: Liczba pokoi w mieszkaniu,
+
+-   `buildYear`: Rok, w którym budynek został zbudowany,
+
+-   `centreDistance`: Odległość od centrum miasta w kilometrach,
+
+-   `poiCount`: Liczba interesujących miejsc (POI) w promieniu 500m,
+
+-   `[poiName]Distance`: Odległość do najbliższego konkretnego punktu
+    POI,
+
+-   `własność`: Rodzaj własności nieruchomości,
+
+-   `condition`: Stan mieszkania,
+
+-   `has[features]`: Zmienne binarne określające kluczowe udogodnienia,
+
+-   `cena`: Cena ofertowa sprzedaży w złotych polskich.
