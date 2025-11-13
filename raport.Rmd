@@ -18,4 +18,4 @@ dane_nieruchomosci <- read_csv("dane_nieruchomosci/apartments_pl_2024_06.csv")
 ```
 
 # Wstęp
-
+Rynek nieruchomości jest jednym z najważniejszych sektorów polskiej gospodarki, decyduje o możliwościach zakupu mieszkania przez Polaków, atrakcyjności inwestycji oraz kondycji całej branży budowlanej. W 2024 roku, dzięki stabilizacji stóp procentowych, rosnącym płacom i niskiej inflacji, zdolność kredytowa gospodarstw domowych wyraźnie się poprawiła. Niniejszy projekt koncentruje się wyłącznie na danych z czerwca 2024 roku, dzięki czemu pozwala dokładnie uchwycić aktualny poziom cen tuż po okresie dynamicznych wzrostów z poprzednich miesięcy.
