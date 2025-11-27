@@ -115,3 +115,19 @@ cat(paste("Liczba obserwacji w czystym zbiorze danych:", obserwacje_po))
 ```{r}
 VIM::aggr(dane_nieruchomosci_czyste, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci_czyste), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
 ```
+
+## Definicja Reguł Walidacyjnych
+Przed przystąpieniem do analizy danych zdefiniowano i sprawdzono reguły, które muszą spełniać oczyszczone dane. Poprawne zdefiniowanie danych zapewnia, że zbiór jest spójny wewnętrznie i spełnia podstawowe kryteria logiczne, tj:
+- cena ofertowa przyjmuje wartości dodatnie,
+- metraż i liczba pokoi przyjmuje wartości dodatnie,
+- odległość od centrum przyjmuje wartości nieujemne.
+
+```{r}
+library(validate)
+rules <- validator(
+  cena >= 0, 
+  squareMeters > 0,
+  rooms > 0,
+  centreDistance >= 0
+)
+```
