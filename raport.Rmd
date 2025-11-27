@@ -96,6 +96,7 @@ w danych znajduje się `r procent` % kompletnych wartości.
 ```{r}
 VIM::aggr(dane_nieruchomosci, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
 ```
+
 ## Czyszczenie danych 
 Na podstawie wstępnej analizy i wizualizacji wzorca braków danych, stwierdzono, że problem niekompletności danych jest marginalny. Największy pojedynczy brak danych dotyczy zmiennej condition (stan mieszkania) i wynosi  0,74% wszystkich obserwacji. Wszystkie pozostałe kluczowe zmienne numeryczne i kategorialne mają braki poniżej 1%. W związku z tym, zdecydowano się na całkowite usunięcie wierszy zawierających braki danych.
 
@@ -109,4 +110,8 @@ obserwacje_usunięte <- obserwacje_przed - obserwacje_po
 
 cat(paste("Usunięto", obserwacje_usunięte, "obserwacji z brakami danych (NA).\n"))
 cat(paste("Liczba obserwacji w czystym zbiorze danych:", obserwacje_po))
+```
+
+```{r}
+VIM::aggr(dane_nieruchomosci_czyste, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci_czyste), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
 ```
