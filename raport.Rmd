@@ -99,24 +99,29 @@ VIM::aggr(dane_nieruchomosci, col=c('navyblue','red'), numbers=TRUE, sortVars=TR
 
 ## Czyszczenie danych
 
-Na podstawie wstępnej analizy i wizualizacji wzorca braków danych,
-stwierdzono, że problem niekompletności danych jest marginalny.
-Największy pojedynczy brak danych dotyczy zmiennej condition (stan
-mieszkania) i wynosi 0,74% wszystkich obserwacji. Wszystkie pozostałe
-kluczowe zmienne numeryczne i kategorialne mają braki poniżej 1%. W
-związku z tym, zdecydowano się na całkowite usunięcie wierszy
-zawierających braki danych.
+Analiza wykazała, że braki danych mają charakter systemowy, ponieważ zmienne condition oraz buildingMaterial zawierają bardzo dużą liczbę wartości nieznanych. Próba usunięcia wszystkich wierszy z brakami doprowadziłaby do utraty ponad 80% obserwacji, co jest niedopuszczalne.
+
+W związku z tym, przyjęto dwuetapową strategię czyszczenia danych:
+
+W pierwszy etapie usunięto zmienne, które mają braki na poziomie przekraczającym 30%, ponieważ są zbyt niekompletne, aby je wykorzystać.
 
 ```{r}
-obserwacje_przed <- nrow(dane_nieruchomosci)
+dane_czyste_etap1 <- dane_nieruchomosci %>%
+  select(-condition, -buildingMaterial)
+```
 
-dane_nieruchomosci_czyste <- na.omit(dane_nieruchomosci)
+W drugim etapie usunięto wszelkie pozostałe obserwacje z brakami danych, co pozwoliło zachować spójność zbioru danych przy minimalnej utracie informacji.
 
-obserwacje_po <- nrow(dane_nieruchomosci_czyste)
-obserwacje_usunięte <- obserwacje_przed - obserwacje_po
+```{r}
+obserwacje_przed_etap2 <- nrow(dane_czyste_etap1)
 
-cat(paste("Usunięto", obserwacje_usunięte, "obserwacji z brakami danych (NA).\n"))
-cat(paste("Liczba obserwacji w czystym zbiorze danych:", obserwacje_po))
+dane_nieruchomosci_czyste <- na.omit(dane_czyste_etap1)
+
+obserwacje_po_etap2 <- nrow(dane_nieruchomosci_czyste)
+obserwacje_usunięte_etap2 <- obserwacje_przed_etap2 - obserwacje_po_etap2
+
+cat(paste("Po usunięciu zmiennych z największymi brakami (condition, buildingMaterial), usunięto dodatkowe", obserwacje_usunięte_etap2, "obserwacji z brakami.\n"))
+cat(paste("Liczba obserwacji w czystym zbiorze danych (ostateczny):", obserwacje_po_etap2))
 ```
 
 ```{r}
