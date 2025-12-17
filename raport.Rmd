@@ -235,3 +235,61 @@ wykres4 <- dane_nieruchomosci_czyste %>%
        y = "Cena za m² (PLN)")
 ggplotly(wykres4)
 ```
+## Jakie znaczenie mają udogodnienia (balkon, winda, parking) dla ceny za metr kwadratowy?
+
+```{r}
+udogodnienia_long <- dane_nieruchomosci_czyste %>%
+  select(pricePerSquareMeter, hasBalcony, hasParkingSpace, hasElevator) %>%
+  pivot_longer(cols = c(hasBalcony, hasParkingSpace, hasElevator), 
+               names_to = "Udogodnienie", 
+               values_to = "Posiada") %>%
+  mutate(
+    Udogodnienie = recode(Udogodnienie, 
+                          "hasBalcony" = "Balkon",
+                          "hasParkingSpace" = "Miejsce Parkingowe",
+                          "hasElevator" = "Winda"),
+    Posiada = recode(Posiada, 
+                     "yes" = "tak", 
+                     "no" = "nie")
+
+  )
+wykres5 <- udogodnienia_long %>%
+  ggplot(aes(x = Posiada, y = pricePerSquareMeter, fill = Posiada)) +
+  geom_boxplot() +
+  facet_wrap(~Udogodnienie) +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
+  labs(title = "Wpływ udogodnień na cenę za m²",
+       x = "Czy posiada udogodnienie?",
+       y = "Cena za m² (PLN)",
+       fill = "Posiada")
+ggplotly(wykres5)
+```
+
+## Jak typ budynku wpływa na poziom cen?
+
+```{r}
+wykres6 <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = type, y = pricePerSquareMeter, fill = type)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
+  labs(title = "Wpływ typu budynku na cenę za m²",
+       x = "Typ budynku",
+       y = "Cena za m² (PLN)",
+       fill = "Typ budynku") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(wykres6)
+```
+
+## Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
+
+```{r}
+wykres7 <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = as.factor(rooms), y = pricePerSquareMeter, fill = as.factor(rooms))) +
+  geom_boxplot() +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
+  labs(title = "Wpływ liczby pokoi na cenę za m²",
+       x = "Liczba pokoi",
+       y = "Cena za m² (PLN)",
+       fill = "Liczba pokoi")
+ggplotly(wykres7)
+```
