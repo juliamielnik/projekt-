@@ -177,7 +177,7 @@ ggplotly(wykres1)
 ## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
 
 ```{r}
-cena_m2 <- dane_nieruchomosci_czyste %>%
+dane_nieruchomosci_czyste <- dane_nieruchomosci_czyste %>%
     mutate(pricePerSquareMeter = price / squareMeters)
 
 wykres2 <- dane_nieruchomosci_czyste %>%
