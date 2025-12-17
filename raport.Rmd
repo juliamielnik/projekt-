@@ -187,7 +187,51 @@ wykres2 <- dane_nieruchomosci_czyste %>%
   labs(title = "Rozkład cen za m² w poszczególnych miastach",
        x = "Miasto",
        y = "Cena za m² (PLN)") +
-  theme(legend.position = "none") # Ukrywamy legendę, bo nazwy są na osi
+  theme(legend.position = "none")
 
 ggplotly(wykres2)
+```
+
+## W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
+
+```{r}
+# Powierzchnia vs Cena Całkowita
+wykres3a <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = squareMeters, y = price)) +
+  geom_point(alpha = 0.3, color = "darkblue") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
+  labs(title = "Zależność ceny całkowitej od metrażu",
+       x = "Powierzchnia (m²)",
+       y = "Cena (PLN)")
+ggplotly(wykres3a)
+```
+
+```{r}
+# Powierzchnia vs Cena za m²
+wykres3b <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = squareMeters, y = pricePerSquareMeter)) +
+  geom_point(alpha = 0.3, color = "darkgreen") +
+  geom_smooth(method = "loess", color = "orange", se = FALSE) +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
+  labs(title = "Zależność ceny za m² od metrażu",
+       x = "Powierzchnia (m²)",
+       y = "Cena za m² (PLN)")
+ggplotly(wykres3b)
+```
+
+## Jak odległość od centrum miasta wpływa na poziom cen mieszkań?
+
+```{r}
+wykres4 <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = centreDistance, y = pricePerSquareMeter)) +
+  geom_point(alpha = 0.3, color = "purple") +
+  geom_smooth(method = "loess", color = "green", se = FALSE)  +       
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  labs(title = "Zależność ceny za m² od odległości od centrum",
+       x = "Odległość od centrum (km)",
+       y = "Cena za m² (PLN)")
+ggplotly(wykres4)
 ```
