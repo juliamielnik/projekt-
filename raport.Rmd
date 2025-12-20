@@ -177,7 +177,7 @@ ggplotly(wykres1)
 ## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
 
 ```{r}
-cena_m2 <- dane_nieruchomosci_czyste %>%
+dane_nieruchomosci_czyste <- dane_nieruchomosci_czyste %>%
     mutate(pricePerSquareMeter = price / squareMeters)
 
 wykres2 <- dane_nieruchomosci_czyste %>%
@@ -187,7 +187,109 @@ wykres2 <- dane_nieruchomosci_czyste %>%
   labs(title = "Rozkład cen za m² w poszczególnych miastach",
        x = "Miasto",
        y = "Cena za m² (PLN)") +
-  theme(legend.position = "none") # Ukrywamy legendę, bo nazwy są na osi
+  theme(legend.position = "none")
 
 ggplotly(wykres2)
+```
+
+## W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
+
+```{r}
+# Powierzchnia vs Cena Całkowita
+wykres3a <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = squareMeters, y = price)) +
+  geom_point(alpha = 0.3, color = "darkblue") +
+  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
+  labs(title = "Zależność ceny całkowitej od metrażu",
+       x = "Powierzchnia (m²)",
+       y = "Cena (PLN)")
+ggplotly(wykres3a)
+```
+
+```{r}
+# Powierzchnia vs Cena za m²
+wykres3b <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = squareMeters, y = pricePerSquareMeter)) +
+  geom_point(alpha = 0.3, color = "darkgreen") +
+  geom_smooth(method = "loess", color = "orange", se = FALSE) +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
+  labs(title = "Zależność ceny za m² od metrażu",
+       x = "Powierzchnia (m²)",
+       y = "Cena za m² (PLN)")
+ggplotly(wykres3b)
+```
+
+## Jak odległość od centrum miasta wpływa na poziom cen mieszkań?
+
+```{r}
+wykres4 <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = centreDistance, y = pricePerSquareMeter)) +
+  geom_point(alpha = 0.3, color = "purple") +
+  geom_smooth(method = "loess", color = "green", se = FALSE)  +       
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
+  labs(title = "Zależność ceny za m² od odległości od centrum",
+       x = "Odległość od centrum (km)",
+       y = "Cena za m² (PLN)")
+ggplotly(wykres4)
+```
+## Jakie znaczenie mają udogodnienia (balkon, winda, parking) dla ceny za metr kwadratowy?
+
+```{r}
+udogodnienia_long <- dane_nieruchomosci_czyste %>%
+  select(pricePerSquareMeter, hasBalcony, hasParkingSpace, hasElevator) %>%
+  pivot_longer(cols = c(hasBalcony, hasParkingSpace, hasElevator), 
+               names_to = "Udogodnienie", 
+               values_to = "Posiada") %>%
+  mutate(
+    Udogodnienie = recode(Udogodnienie, 
+                          "hasBalcony" = "Balkon",
+                          "hasParkingSpace" = "Miejsce Parkingowe",
+                          "hasElevator" = "Winda"),
+    Posiada = recode(Posiada, 
+                     "yes" = "tak", 
+                     "no" = "nie")
+
+  )
+wykres5 <- udogodnienia_long %>%
+  ggplot(aes(x = Posiada, y = pricePerSquareMeter, fill = Posiada)) +
+  geom_boxplot() +
+  facet_wrap(~Udogodnienie) +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
+  labs(title = "Wpływ udogodnień na cenę za m²",
+       x = "Czy posiada udogodnienie?",
+       y = "Cena za m² (PLN)",
+       fill = "Posiada")
+ggplotly(wykres5)
+```
+
+## Jak typ budynku wpływa na poziom cen?
+
+```{r}
+wykres6 <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = type, y = pricePerSquareMeter, fill = type)) +
+  geom_boxplot() +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
+  labs(title = "Wpływ typu budynku na cenę za m²",
+       x = "Typ budynku",
+       y = "Cena za m² (PLN)",
+       fill = "Typ budynku") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+ggplotly(wykres6)
+```
+
+## Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
+
+```{r}
+wykres7 <- dane_nieruchomosci_czyste %>%
+  ggplot(aes(x = as.factor(rooms), y = pricePerSquareMeter, fill = as.factor(rooms))) +
+  geom_boxplot() +
+  scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
+  labs(title = "Wpływ liczby pokoi na cenę za m²",
+       x = "Liczba pokoi",
+       y = "Cena za m² (PLN)",
+       fill = "Liczba pokoi")
+ggplotly(wykres7)
 ```
