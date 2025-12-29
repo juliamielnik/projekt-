@@ -34,8 +34,8 @@ poziom cen tuż po okresie dynamicznych wzrostów z poprzednich miesięcy.
 
 ## Pytania badawcze
 
-1.  Jak kształtują się **średnie ceny** mieszkań w 15 największych
-    miastach Polski?
+1.  Jak kształtują się **średnie ceny** całkowite oraz ceny za metr
+    kwadratowy mieszkań w 15 największych miastach Polski?
 2.  Które miasta charakteryzują się **najwyższymi**, a które
     **najniższymi** **cenami** za metr kwadratowy?
 3.  W jaki sposób **powierzchnia** mieszkania wpływa na jego cenę
@@ -97,18 +97,24 @@ VIM::aggr(dane_nieruchomosci, col=c('navyblue','red'), numbers=TRUE, sortVars=TR
 
 ## Czyszczenie danych
 
-Analiza wykazała, że braki danych mają charakter systemowy, ponieważ zmienne condition oraz buildingMaterial zawierają bardzo dużą liczbę wartości nieznanych. Próba usunięcia wszystkich wierszy z brakami doprowadziłaby do utraty ponad 80% obserwacji, co jest niedopuszczalne.
+Analiza wykazała, że braki danych mają charakter systemowy, ponieważ
+zmienne condition oraz buildingMaterial zawierają bardzo dużą liczbę
+wartości nieznanych. Próba usunięcia wszystkich wierszy z brakami
+doprowadziłaby do utraty ponad 80% obserwacji, co jest niedopuszczalne.
 
 W związku z tym, przyjęto dwuetapową strategię czyszczenia danych:
 
-W pierwszy etapie usunięto zmienne, które mają braki na poziomie przekraczającym 30%, ponieważ są zbyt niekompletne, aby je wykorzystać.
+W pierwszy etapie usunięto zmienne, które mają braki na poziomie
+przekraczającym 30%, ponieważ są zbyt niekompletne, aby je wykorzystać.
 
 ```{r}
 dane_czyste_etap1 <- dane_nieruchomosci %>%
   select(-condition, -buildingMaterial)
 ```
 
-W drugim etapie usunięto wszelkie pozostałe obserwacje z brakami danych, co pozwoliło zachować spójność zbioru danych przy minimalnej utracie informacji.
+W drugim etapie usunięto wszelkie pozostałe obserwacje z brakami danych,
+co pozwoliło zachować spójność zbioru danych przy minimalnej utracie
+informacji.
 
 ```{r}
 obserwacje_przed_etap2 <- nrow(dane_czyste_etap1)
@@ -150,6 +156,7 @@ rules <- validator(
 ```
 
 # Wizualizacje danych
+
 ```{r}
 library(ggplot2)
 library(plotly)
@@ -157,7 +164,7 @@ library(dplyr)
 library(tidyr)
 ```
 
-## Jak kształtują się średnie ceny mieszkań w 15 największych miastach Polski?
+## Jak kształtują się średnie ceny całkowite oraz ceny za metr kwadratowy mieszkań w 15 największych miastach Polski?
 
 ```{r}
 wykres1 <- dane_nieruchomosci_czyste %>%
@@ -174,12 +181,48 @@ wykres1 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres1)
 ```
 
-## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
-
 ```{r}
+library(maps)
+library(ggrepel)
+
 dane_nieruchomosci_czyste <- dane_nieruchomosci_czyste %>%
     mutate(pricePerSquareMeter = price / squareMeters)
 
+polska_mapa <- map_data("world", region = "Poland")
+
+dane_do_mapy <- dane_nieruchomosci_czyste %>%
+  group_by(city) %>%
+  summarise(
+    srednia_cena_m2 = mean(pricePerSquareMeter, na.rm = TRUE),       
+    lat = mean(latitude, na.rm = TRUE),            
+    lon = mean(longitude, na.rm = TRUE)            
+  )
+
+ggplot() +
+  geom_polygon(data = polska_mapa, aes(x = long, y = lat, group = group), 
+               fill = "#f0f0f0", color = "white") +
+  
+  geom_point(data = dane_do_mapy, aes(x = lon, y = lat, size = srednia_cena_m2, color = srednia_cena_m2), 
+             alpha = 0.8) +
+  
+  geom_text_repel(data = dane_do_mapy, aes(x = lon, y = lat, label = city), 
+                  size = 3.5, box.padding = 0.5) +
+  
+  scale_color_gradient(low = "#5D9CEC", high = "#003366", 
+                       labels = scales::number_format(big.mark = " ")) +
+  scale_size(range = c(3, 10), guide = "none") + 
+  
+  coord_map() +   
+  theme_void() +  
+  
+  labs(title = "Zróżnicowanie cen mieszkań za metr kwadratowy w Polsce",
+       color = "Średnia cena za metr kwadratowy (PLN)") +
+  theme(legend.position = "right")
+```
+
+## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
+
+```{r}
 wykres2 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = reorder(city, pricePerSquareMeter), y = pricePerSquareMeter)) +
   geom_boxplot(aes(fill = city), alpha = 0.7, outlier.shape = NA) + 
@@ -235,6 +278,7 @@ wykres4 <- dane_nieruchomosci_czyste %>%
        y = "Cena za m² (PLN)")
 ggplotly(wykres4)
 ```
+
 ## Jakie znaczenie mają udogodnienia (balkon, winda, parking) dla ceny za metr kwadratowy?
 
 ```{r}
@@ -251,7 +295,6 @@ udogodnienia_long <- dane_nieruchomosci_czyste %>%
     Posiada = recode(Posiada, 
                      "yes" = "tak", 
                      "no" = "nie")
-
   )
 wykres5 <- udogodnienia_long %>%
   ggplot(aes(x = Posiada, y = pricePerSquareMeter, fill = Posiada)) +
@@ -269,6 +312,10 @@ ggplotly(wykres5)
 
 ```{r}
 wykres6 <- dane_nieruchomosci_czyste %>%
+  mutate(type = recode(type, 
+                       "apartmentBuilding" = "Apartamentowiec",
+                       "blockOfFlats" = "Blok mieszkalny",
+                       "tenement" = "Kamienica")) %>%
   ggplot(aes(x = type, y = pricePerSquareMeter, fill = type)) +
   geom_boxplot() +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
