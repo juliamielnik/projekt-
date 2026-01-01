@@ -112,7 +112,7 @@ dane_czyste_etap1 <- dane_nieruchomosci %>%
   select(-condition, -buildingMaterial)
 ```
 
-W drugim etapie usunięto wszelkie pozostałe obserwacje z brakami danych,
+W drugim etapie usunięto pozostałe obserwacje z brakami danych,
 co pozwoliło zachować spójność zbioru danych przy minimalnej utracie
 informacji.
 
@@ -157,6 +157,8 @@ rules <- validator(
 
 # Wizualizacje danych
 
+Kluczowym etapem analizy rynku nieruchomości jest przejrzysta prezentacja zgromadzonych informacji. Surowe dane liczbowe nie pozwalają na natychmiastowe dostrzeżenie trendów czy zależności, które mogą mieć kluczowe znaczenie dla inwestorów oraz osób poszukujących własnego lokum. W niniejszym rozdziale poddano analizie zbiór danych dotyczący ofert mieszkań w 15 największych miastach Polski, wykorzystując zaawansowane narzędzia pakietu ggplot2 oraz interaktywne możliwości biblioteki plotly.
+
 ```{r}
 library(ggplot2)
 library(plotly)
@@ -171,7 +173,7 @@ wykres1 <- dane_nieruchomosci_czyste %>%
   group_by(city) %>%
   summarise(srednia_cena = mean(price, na.rm = TRUE)) %>%
   ggplot(aes(x = reorder(city, srednia_cena), y = srednia_cena)) +
-  geom_col(fill = "steelblue") +
+  geom_col(fill = "navyblue") +
   coord_flip() + 
   scale_y_continuous(labels = scales::number_format(big.mark = " ", decimal.mark = ",")) + 
   labs(title = "Średnia cena mieszkań w poszczególnych miastach",
@@ -208,7 +210,7 @@ ggplot() +
   geom_text_repel(data = dane_do_mapy, aes(x = lon, y = lat, label = city), 
                   size = 3.5, box.padding = 0.5) +
   
-  scale_color_gradient(low = "#5D9CEC", high = "#003366", 
+  scale_color_gradient(low = "#C6DBEF", high = "#000080", 
                        labels = scales::number_format(big.mark = " ")) +
   scale_size(range = c(3, 10), guide = "none") + 
   
@@ -226,6 +228,7 @@ ggplot() +
 wykres2 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = reorder(city, pricePerSquareMeter), y = pricePerSquareMeter)) +
   geom_boxplot(aes(fill = city), alpha = 0.7, outlier.shape = NA) + 
+  scale_fill_manual(values = colorRampPalette(c("#C6DBEF", "#000080"))(15)) +
   coord_flip() +
   labs(title = "Rozkład cen za m² w poszczególnych miastach",
        x = "Miasto",
@@ -241,8 +244,8 @@ ggplotly(wykres2)
 # Powierzchnia vs Cena Całkowita
 wykres3a <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = squareMeters, y = price)) +
-  geom_point(alpha = 0.3, color = "darkblue") +
-  geom_smooth(method = "lm", color = "red", se = FALSE) +
+  geom_point(alpha = 0.3, color = "lightskyblue2") +
+  geom_smooth(method = "lm", color = "navyblue", se = FALSE) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
   labs(title = "Zależność ceny całkowitej od metrażu",
@@ -255,8 +258,8 @@ ggplotly(wykres3a)
 # Powierzchnia vs Cena za m²
 wykres3b <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = squareMeters, y = pricePerSquareMeter)) +
-  geom_point(alpha = 0.3, color = "darkgreen") +
-  geom_smooth(method = "loess", color = "orange", se = FALSE) +
+  geom_point(alpha = 0.3, color = "lightskyblue1") +
+  geom_smooth(method = "loess", color = "navyblue", se = FALSE) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
   labs(title = "Zależność ceny za m² od metrażu",
@@ -270,8 +273,8 @@ ggplotly(wykres3b)
 ```{r}
 wykres4 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = centreDistance, y = pricePerSquareMeter)) +
-  geom_point(alpha = 0.3, color = "purple") +
-  geom_smooth(method = "loess", color = "green", se = FALSE)  +       
+  geom_point(alpha = 0.3, color = "lightskyblue3") +
+  geom_smooth(method = "loess", color = "navyblue", se = FALSE)  +       
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   labs(title = "Zależność ceny za m² od odległości od centrum",
        x = "Odległość od centrum (km)",
@@ -300,6 +303,7 @@ wykres5 <- udogodnienia_long %>%
   ggplot(aes(x = Posiada, y = pricePerSquareMeter, fill = Posiada)) +
   geom_boxplot() +
   facet_wrap(~Udogodnienie) +
+  scale_fill_manual(values = c("Nie" = "#C6DBEF", "Tak" = "#000080")) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
   labs(title = "Wpływ udogodnień na cenę za m²",
        x = "Czy posiada udogodnienie?",
@@ -318,6 +322,11 @@ wykres6 <- dane_nieruchomosci_czyste %>%
                        "tenement" = "Kamienica")) %>%
   ggplot(aes(x = type, y = pricePerSquareMeter, fill = type)) +
   geom_boxplot() +
+  scale_fill_manual(values = c(
+    "Apartamentowiec" = "#000080",   
+    "Kamienica" = "#4682B4",         
+    "Blok mieszkalny" = "#C6DBEF"    
+  )) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
   labs(title = "Wpływ typu budynku na cenę za m²",
        x = "Typ budynku",
@@ -333,6 +342,7 @@ ggplotly(wykres6)
 wykres7 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = as.factor(rooms), y = pricePerSquareMeter, fill = as.factor(rooms))) +
   geom_boxplot() +
+  scale_fill_manual(values = colorRampPalette(c("#000080", "#C6DBEF")) (6)) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
   labs(title = "Wpływ liczby pokoi na cenę za m²",
        x = "Liczba pokoi",
