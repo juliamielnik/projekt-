@@ -182,6 +182,8 @@ wykres1 <- dane_nieruchomosci_czyste %>%
 
 ggplotly(wykres1)
 ```
+Wykres przedstawia zróżnicowanie średnich cen mieszkań pomiędzy analizowanymi miastami. Najwyższe wartości obserwowane są w Warszawie i Krakowie, a następnie w Gdyni i Gdańsku, co wskazuje na silny popyt na rynkach dużych aglomeracji. Niższe średnie ceny występują w miastach takich jak Białystok, Radom i Częstochowa, które pełnią funkcję mniejszych lub średnich ośrodków miejskich.
+
 
 ```{r}
 library(maps)
@@ -221,6 +223,8 @@ ggplot() +
        color = "Średnia cena za metr kwadratowy (PLN)") +
   theme(legend.position = "right")
 ```
+Mapa przedstawia regionalne zróżnicowanie średnich cen za m² w Polsce. Najwyższe wartości występują w największych aglomeracjach (Warszawa, Kraków, Trójmiasto), natomiast niższe w miastach średnich i mniejszych, takich jak Radom czy Częstochowa. Wyniki potwierdzają silny wpływ lokalizacji i rangi jednostki miejskiej na poziom cen nieruchomości.
+
 
 ## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
 
@@ -237,6 +241,8 @@ wykres2 <- dane_nieruchomosci_czyste %>%
 
 ggplotly(wykres2)
 ```
+Wykres pudełkowy obrazuje poziom cen oraz ich zróżnicowanie wewnątrz poszczególnych rynków lokalnych. Warszawa, Kraków, Gdańsk i Gdynia charakteryzują się wyższą medianą cen za m² oraz większą zmiennością, co wskazuje na współwystępowanie nieruchomości o bardzo zróżnicowanym standardzie i lokalizacji. W pozostałych miastach rozkłady cen są bardziej skupione, co sugeruje większą jednorodność oferty mieszkaniowej
+
 
 ## W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
 
@@ -253,6 +259,8 @@ wykres3a <- dane_nieruchomosci_czyste %>%
        y = "Cena (PLN)")
 ggplotly(wykres3a)
 ```
+Wykres rozrzutu wskazuje na silną dodatnią zależność liniową pomiędzy powierzchnią mieszkania a jego ceną całkowitą. Wraz ze wzrostem metrażu rośnie przeciętna cena nieruchomości, co potwierdza linia trendu. Jednocześnie obserwowany jest wzrost rozproszenia wartości cenowych dla większych mieszkań, co sugeruje większe zróżnicowanie standardu, lokalizacji oraz charakteru nieruchomości w tym segmencie.
+
 
 ```{r}
 # Powierzchnia vs Cena za m²
@@ -267,6 +275,8 @@ wykres3b <- dane_nieruchomosci_czyste %>%
        y = "Cena za m² (PLN)")
 ggplotly(wykres3b)
 ```
+Analiza zależności ceny jednostkowej od powierzchni lokalu mieszkalnego wskazuje na nieliniowy charakter tej relacji. Najwyższe ceny za metr kwadratowy obserwowane są w przypadku mieszkań o najmniejszym metrażu, po czym następuje ich stopniowy spadek wraz ze wzrostem powierzchni. W segmencie mieszkań o dużej powierzchni cena za m² ulega stabilizacji lub wykazuje tendencję spadkową, co pozostaje zgodne z prawidłowościami kształtowania się cen jednostkowych w zależności od metrażu oraz preferencjami popytowymi uczestników rynku nieruchomości.
+
 
 ## Jak odległość od centrum miasta wpływa na poziom cen mieszkań?
 
@@ -281,6 +291,8 @@ wykres4 <- dane_nieruchomosci_czyste %>%
        y = "Cena za m² (PLN)")
 ggplotly(wykres4)
 ```
+Wykres ilustruje relację pomiędzy ceną jednostkową lokali mieszkalnych a ich odległością od centrum miasta. Najwyższe wartości cen za metr kwadratowy występują w lokalizacjach centralnych, natomiast wraz ze wzrostem odległości od centrum obserwuje się tendencję do obniżania poziomu cen. Relacja ta nie ma charakteru ściśle liniowego, co wskazuje, że na kształtowanie się cen istotnie oddziałują również czynniki lokalne, takie jak poziom rozwoju infrastruktury, dostępność transportu publicznego oraz charakter poszczególnych dzielnic mieszkaniowych.
+
 
 ## Jakie znaczenie mają udogodnienia (balkon, winda, parking) dla ceny za metr kwadratowy?
 
@@ -311,6 +323,7 @@ wykres5 <- udogodnienia_long %>%
        fill = "Posiada")
 ggplotly(wykres5)
 ```
+Analiza wskazuje, że obecność udogodnień takich jak balkon, miejsce parkingowe oraz winda wiąże się ze statystycznie wyższą medianą ceny za m². Najsilniejszy efekt obserwowany jest w przypadku wind, co sugeruje istotne znaczenie standardu budynku dla wyceny nieruchomości.
 
 ## Jak typ budynku wpływa na poziom cen?
 
@@ -335,6 +348,8 @@ wykres6 <- dane_nieruchomosci_czyste %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(wykres6)
 ```
+Wykres pokazuje wyraźne różnice cenowe pomiędzy typami zabudowy. Apartamentowce charakteryzują się najwyższymi medianami cen za m², następnie kamienice, natomiast bloki mieszkalne osiągają najniższe wartości. Różnice te odzwierciedlają zróżnicowany standard techniczny, wiek zabudowy oraz lokalizację.
+
 
 ## Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
 
@@ -350,3 +365,4 @@ wykres7 <- dane_nieruchomosci_czyste %>%
        fill = "Liczba pokoi")
 ggplotly(wykres7)
 ```
+Wykres pudełkowy obrazuje rozpiętość cen za metr kwadratowy mieszkań w zależności od liczby pokoi. Najwyższe mediany cen odnotowuje się w przypadku mieszkań jednopokojowych, natomiast w lokalach dwu- i trzypokojowych obserwuje się spadek wartości cen jednostkowych. W przypadku mieszkań czteropokojowych i większych mediana cen pozostaje stosunkowo stabilna, a następnie rośnie nieznacznie, co może być efektem ograniczonej podaży oraz większego zainteresowania większymi lokalami, często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
