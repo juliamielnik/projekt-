@@ -268,7 +268,6 @@ bardziej skupione, co sugeruje większą jednorodność oferty mieszkaniowej
 ## W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
 
 ```{r}
-# Powierzchnia vs Cena Całkowita
 wykres3a <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = squareMeters, y = price)) +
   geom_point(alpha = 0.3, color = "#B87333") +
@@ -425,11 +424,14 @@ często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
 
 # Analiza opisowa
 
+Poniższa część projektu zawiera podstawowe statystyki opisowe, pozwalające na charakterystykę rozkładu cen i metrażu w analizowanych miastach. Analizie poddano również korelację między zmiennymi, co pozwala na ocenę siły powiązań między ceną a pozostałymi parametrami ofert.
+
 ```{r}
 library(e1071)      
 library(corrplot)   
 library(kableExtra) 
-library(gtsummary) 
+library(gtsummary)
+library(DescTools)
 ```
 
 ## Szczegółowe statystyki cenowe wg miast
@@ -461,6 +463,9 @@ tabela_miasta %>%
   column_spec(1, bold = T) %>%
   add_header_above(c(" " = 2, "Miary Położenia" = 4, "Miary Zmienności" = 2, "Kształt" = 2))
 ```
+Analiza danych wskazuje na wyraźną dominację cenową Warszawy, gdzie średnia stawka za metr kwadratowy (ok. 18 700 PLN) znacznie przewyższa poziomy notowane w pozostałych ośrodkach. Za stolicą plasuje się grupa miast o wysokich wycenach, do której należą Kraków, Gdańsk i Gdynia, osiągając pułap powyżej 14 500 PLN/m². Na przeciwległym końcu zestawienia znajdują się Częstochowa i Radom z cenami w okolicach 7 000 PLN/m². Taki układ danych obrazuje skalę dysproporcji na polskim rynku - stawki w najdroższym mieście są ponad dwukrotnie wyższe niż w ośrodkach zamykających ranking.
+Analiza miar zmienności ujawnia, że najdroższe rynki są jednocześnie najbardziej niejednorodne. Szczególnie wyróżnia się Gdynia, która mimo niższej średniej niż Warszawa, posiada najwyższe odchylenie standardowe (ponad 5 000 PLN) oraz bardzo wysoką cenę maksymalną (ponad 30 000 PLN/m²). Sugeruje to silną obecność luksusowych inwestycji nadmorskich, które znacząco odbiegają od standardowych ofert. Z kolei rynki o niższych cenach (Radom, Częstochowa) charakteryzują się znacznie mniejszą zmiennością, co świadczy o większej jednolitości ofert.
+Warto również zwrócić uwagę na dodatnią skośność rozkładu w większości miast (najsilniejszą w Gdyni: 1.18 i Krakowie: 0.92). Oznacza to, że średnie ceny są zawyżane przez "ogon" drogich apartamentów, podczas gdy typowa oferta rynkowa (mediana) jest nieco tańsza. Jedynie w miastach takich jak Rzeszów czy Szczecin rozkład jest bliski symetrycznemu, co sugeruje bardziej zrównoważoną strukturę cenową bez ekstremalnych odchyleń w górę.
 
 ## Charakterystyka ofert rynkowych w podziale na typ budynku
 
@@ -559,20 +564,16 @@ corrplot(M, method = "color", type = "upper",
 
 ## Współczynnik V-Cramera
 
-library(DescTools)
 
 ```{r}
 tabela_krzyzowa <- table(dane_nieruchomosci_czyste$city, dane_nieruchomosci_czyste$type)
-
 cramer_wynik <- CramerV(tabela_krzyzowa)
- 
-cat(, round(cramer_wynik, 3), "\n")
- 
+cat("Współczynnik V-Cramera dla zależności Miasto <-> Typ Budynku wynosi:", round(cramer_wynik, 3), "\n")
 if(cramer_wynik < 0.1) {
-  cat
+  cat("Oznacza to znikomy związek.")
 } else if (cramer_wynik < 0.3) {
-  cat
+  cat("Oznacza to słaby związek.")
 } else {
-  cat
+  cat("Oznacza to umiarkowany lub silny związek.")
 }
 ```
