@@ -92,7 +92,7 @@ procent <- prop_complete(dane_nieruchomosci) * 100
 w danych znajduje się `r procent` % kompletnych wartości.
 
 ```{r}
-VIM::aggr(dane_nieruchomosci, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
+VIM::aggr(dane_nieruchomosci, col=c('midnightblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
 ```
 
 ## Czyszczenie danych
@@ -112,8 +112,8 @@ dane_czyste_etap1 <- dane_nieruchomosci %>%
   select(-condition, -buildingMaterial)
 ```
 
-W drugim etapie usunięto pozostałe obserwacje z brakami danych,
-co pozwoliło zachować spójność zbioru danych przy minimalnej utracie
+W drugim etapie usunięto pozostałe obserwacje z brakami danych, co
+pozwoliło zachować spójność zbioru danych przy minimalnej utracie
 informacji.
 
 ```{r}
@@ -129,7 +129,7 @@ cat(paste("Liczba obserwacji w czystym zbiorze danych (ostateczny):", obserwacje
 ```
 
 ```{r}
-VIM::aggr(dane_nieruchomosci_czyste, col=c('navyblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci_czyste), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
+VIM::aggr(dane_nieruchomosci_czyste, col=c('midnightblue','red'), numbers=TRUE, sortVars=TRUE, labels=names(dane_nieruchomosci_czyste), cex.axis=.7, gap=3, ylab=c("Procent braków danych","Wzorzec braków danych"))
 ```
 
 ## Definicja Reguł Walidacyjnych
@@ -157,7 +157,14 @@ rules <- validator(
 
 # Wizualizacje danych
 
-Kluczowym etapem analizy rynku nieruchomości jest przejrzysta prezentacja zgromadzonych informacji. Surowe dane liczbowe nie pozwalają na natychmiastowe dostrzeżenie trendów czy zależności, które mogą mieć kluczowe znaczenie dla inwestorów oraz osób poszukujących własnego lokum. W niniejszym rozdziale poddano analizie zbiór danych dotyczący ofert mieszkań w 15 największych miastach Polski, wykorzystując zaawansowane narzędzia pakietu ggplot2 oraz interaktywne możliwości biblioteki plotly.
+Kluczowym etapem analizy rynku nieruchomości jest przejrzysta
+prezentacja zgromadzonych informacji. Surowe dane liczbowe nie pozwalają
+na natychmiastowe dostrzeżenie trendów czy zależności, które mogą mieć
+kluczowe znaczenie dla inwestorów oraz osób poszukujących własnego
+lokum. W niniejszym rozdziale poddano analizie zbiór danych dotyczący
+ofert mieszkań w 15 największych miastach Polski, wykorzystując
+zaawansowane narzędzia pakietu ggplot2 oraz interaktywne możliwości
+biblioteki plotly.
 
 ```{r}
 library(ggplot2)
@@ -173,7 +180,7 @@ wykres1 <- dane_nieruchomosci_czyste %>%
   group_by(city) %>%
   summarise(srednia_cena = mean(price, na.rm = TRUE)) %>%
   ggplot(aes(x = reorder(city, srednia_cena), y = srednia_cena)) +
-  geom_col(fill = "navyblue") +
+  geom_col(fill = "#5D2906") +
   coord_flip() + 
   scale_y_continuous(labels = scales::number_format(big.mark = " ", decimal.mark = ",")) + 
   labs(title = "Średnia cena mieszkań w poszczególnych miastach",
@@ -182,8 +189,13 @@ wykres1 <- dane_nieruchomosci_czyste %>%
 
 ggplotly(wykres1)
 ```
-Wykres przedstawia zróżnicowanie średnich cen mieszkań pomiędzy analizowanymi miastami. Najwyższe wartości obserwowane są w Warszawie i Krakowie, a następnie w Gdyni i Gdańsku, co wskazuje na silny popyt na rynkach dużych aglomeracji. Niższe średnie ceny występują w miastach takich jak Białystok, Radom i Częstochowa, które pełnią funkcję mniejszych lub średnich ośrodków miejskich.
 
+Wykres przedstawia zróżnicowanie średnich cen mieszkań pomiędzy
+analizowanymi miastami. Najwyższe wartości obserwowane są w Warszawie i
+Krakowie, a następnie w Gdyni i Gdańsku, co wskazuje na silny popyt na
+rynkach dużych aglomeracji. Niższe średnie ceny występują w miastach
+takich jak Białystok, Radom i Częstochowa, które pełnią funkcję
+mniejszych lub średnich ośrodków miejskich.
 
 ```{r}
 library(maps)
@@ -212,7 +224,7 @@ ggplot() +
   geom_text_repel(data = dane_do_mapy, aes(x = lon, y = lat, label = city), 
                   size = 3.5, box.padding = 0.5) +
   
-  scale_color_gradient(low = "#C6DBEF", high = "#000080", 
+  scale_color_gradient(low = "#F5D5B0", high = "#5D2906", 
                        labels = scales::number_format(big.mark = " ")) +
   scale_size(range = c(3, 10), guide = "none") + 
   
@@ -223,8 +235,12 @@ ggplot() +
        color = "Średnia cena za metr kwadratowy (PLN)") +
   theme(legend.position = "right")
 ```
-Mapa przedstawia regionalne zróżnicowanie średnich cen za m² w Polsce. Najwyższe wartości występują w największych aglomeracjach (Warszawa, Kraków, Trójmiasto), natomiast niższe w miastach średnich i mniejszych, takich jak Radom czy Częstochowa. Wyniki potwierdzają silny wpływ lokalizacji i rangi jednostki miejskiej na poziom cen nieruchomości.
 
+Mapa przedstawia regionalne zróżnicowanie średnich cen za m² w Polsce.
+Najwyższe wartości występują w największych aglomeracjach (Warszawa,
+Kraków, Trójmiasto), natomiast niższe w miastach średnich i mniejszych,
+takich jak Radom czy Częstochowa. Wyniki potwierdzają silny wpływ
+lokalizacji i rangi jednostki miejskiej na poziom cen nieruchomości.
 
 ## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
 
@@ -232,7 +248,7 @@ Mapa przedstawia regionalne zróżnicowanie średnich cen za m² w Polsce. Najwy
 wykres2 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = reorder(city, pricePerSquareMeter), y = pricePerSquareMeter)) +
   geom_boxplot(aes(fill = city), alpha = 0.7, outlier.shape = NA) + 
-  scale_fill_manual(values = colorRampPalette(c("#C6DBEF", "#000080"))(15)) +
+  scale_fill_manual(values = colorRampPalette(c("#F5D5B0", "#5D2906"))(15)) +
   coord_flip() +
   labs(title = "Rozkład cen za m² w poszczególnych miastach",
        x = "Miasto",
@@ -241,8 +257,13 @@ wykres2 <- dane_nieruchomosci_czyste %>%
 
 ggplotly(wykres2)
 ```
-Wykres pudełkowy obrazuje poziom cen oraz ich zróżnicowanie wewnątrz poszczególnych rynków lokalnych. Warszawa, Kraków, Gdańsk i Gdynia charakteryzują się wyższą medianą cen za m² oraz większą zmiennością, co wskazuje na współwystępowanie nieruchomości o bardzo zróżnicowanym standardzie i lokalizacji. W pozostałych miastach rozkłady cen są bardziej skupione, co sugeruje większą jednorodność oferty mieszkaniowej
 
+Wykres pudełkowy obrazuje poziom cen oraz ich zróżnicowanie wewnątrz
+poszczególnych rynków lokalnych. Warszawa, Kraków, Gdańsk i Gdynia
+charakteryzują się wyższą medianą cen za m² oraz większą zmiennością, co
+wskazuje na współwystępowanie nieruchomości o bardzo zróżnicowanym
+standardzie i lokalizacji. W pozostałych miastach rozkłady cen są
+bardziej skupione, co sugeruje większą jednorodność oferty mieszkaniowej
 
 ## W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
 
@@ -250,8 +271,8 @@ Wykres pudełkowy obrazuje poziom cen oraz ich zróżnicowanie wewnątrz poszcze
 # Powierzchnia vs Cena Całkowita
 wykres3a <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = squareMeters, y = price)) +
-  geom_point(alpha = 0.3, color = "lightskyblue2") +
-  geom_smooth(method = "lm", color = "navyblue", se = FALSE) +
+  geom_point(alpha = 0.3, color = "#B87333") +
+  geom_smooth(method = "lm", color = "#5D2906", se = FALSE) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
   labs(title = "Zależność ceny całkowitej od metrażu",
@@ -259,15 +280,20 @@ wykres3a <- dane_nieruchomosci_czyste %>%
        y = "Cena (PLN)")
 ggplotly(wykres3a)
 ```
-Wykres rozrzutu wskazuje na silną dodatnią zależność liniową pomiędzy powierzchnią mieszkania a jego ceną całkowitą. Wraz ze wzrostem metrażu rośnie przeciętna cena nieruchomości, co potwierdza linia trendu. Jednocześnie obserwowany jest wzrost rozproszenia wartości cenowych dla większych mieszkań, co sugeruje większe zróżnicowanie standardu, lokalizacji oraz charakteru nieruchomości w tym segmencie.
 
+Wykres rozrzutu wskazuje na silną dodatnią zależność liniową pomiędzy
+powierzchnią mieszkania a jego ceną całkowitą. Wraz ze wzrostem metrażu
+rośnie przeciętna cena nieruchomości, co potwierdza linia trendu.
+Jednocześnie obserwowany jest wzrost rozproszenia wartości cenowych dla
+większych mieszkań, co sugeruje większe zróżnicowanie standardu,
+lokalizacji oraz charakteru nieruchomości w tym segmencie.
 
 ```{r}
 # Powierzchnia vs Cena za m²
 wykres3b <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = squareMeters, y = pricePerSquareMeter)) +
-  geom_point(alpha = 0.3, color = "lightskyblue1") +
-  geom_smooth(method = "loess", color = "navyblue", se = FALSE) +
+  geom_point(alpha = 0.3, color = "#B87333") +
+  geom_smooth(method = "loess", color = "#5D2906", se = FALSE) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   scale_x_continuous(labels = scales::number_format(big.mark = " ")) +
   labs(title = "Zależność ceny za m² od metrażu",
@@ -275,24 +301,38 @@ wykres3b <- dane_nieruchomosci_czyste %>%
        y = "Cena za m² (PLN)")
 ggplotly(wykres3b)
 ```
-Analiza zależności ceny jednostkowej od powierzchni lokalu mieszkalnego wskazuje na nieliniowy charakter tej relacji. Najwyższe ceny za metr kwadratowy obserwowane są w przypadku mieszkań o najmniejszym metrażu, po czym następuje ich stopniowy spadek wraz ze wzrostem powierzchni. W segmencie mieszkań o dużej powierzchni cena za m² ulega stabilizacji lub wykazuje tendencję spadkową, co pozostaje zgodne z prawidłowościami kształtowania się cen jednostkowych w zależności od metrażu oraz preferencjami popytowymi uczestników rynku nieruchomości.
 
+Analiza zależności ceny jednostkowej od powierzchni lokalu mieszkalnego
+wskazuje na nieliniowy charakter tej relacji. Najwyższe ceny za metr
+kwadratowy obserwowane są w przypadku mieszkań o najmniejszym metrażu,
+po czym następuje ich stopniowy spadek wraz ze wzrostem powierzchni. W
+segmencie mieszkań o dużej powierzchni cena za m² ulega stabilizacji lub
+wykazuje tendencję spadkową, co pozostaje zgodne z prawidłowościami
+kształtowania się cen jednostkowych w zależności od metrażu oraz
+preferencjami popytowymi uczestników rynku nieruchomości.
 
 ## Jak odległość od centrum miasta wpływa na poziom cen mieszkań?
 
 ```{r}
 wykres4 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = centreDistance, y = pricePerSquareMeter)) +
-  geom_point(alpha = 0.3, color = "lightskyblue3") +
-  geom_smooth(method = "loess", color = "navyblue", se = FALSE)  +       
+  geom_point(alpha = 0.3, color = "#B87333") +
+  geom_smooth(method = "loess", color = "#5D2906", se = FALSE)  +       
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) +
   labs(title = "Zależność ceny za m² od odległości od centrum",
        x = "Odległość od centrum (km)",
        y = "Cena za m² (PLN)")
 ggplotly(wykres4)
 ```
-Wykres ilustruje relację pomiędzy ceną jednostkową lokali mieszkalnych a ich odległością od centrum miasta. Najwyższe wartości cen za metr kwadratowy występują w lokalizacjach centralnych, natomiast wraz ze wzrostem odległości od centrum obserwuje się tendencję do obniżania poziomu cen. Relacja ta nie ma charakteru ściśle liniowego, co wskazuje, że na kształtowanie się cen istotnie oddziałują również czynniki lokalne, takie jak poziom rozwoju infrastruktury, dostępność transportu publicznego oraz charakter poszczególnych dzielnic mieszkaniowych.
 
+Wykres ilustruje relację pomiędzy ceną jednostkową lokali mieszkalnych a
+ich odległością od centrum miasta. Najwyższe wartości cen za metr
+kwadratowy występują w lokalizacjach centralnych, natomiast wraz ze
+wzrostem odległości od centrum obserwuje się tendencję do obniżania
+poziomu cen. Relacja ta nie ma charakteru ściśle liniowego, co wskazuje,
+że na kształtowanie się cen istotnie oddziałują również czynniki
+lokalne, takie jak poziom rozwoju infrastruktury, dostępność transportu
+publicznego oraz charakter poszczególnych dzielnic mieszkaniowych.
 
 ## Jakie znaczenie mają udogodnienia (balkon, winda, parking) dla ceny za metr kwadratowy?
 
@@ -315,7 +355,7 @@ wykres5 <- udogodnienia_long %>%
   ggplot(aes(x = Posiada, y = pricePerSquareMeter, fill = Posiada)) +
   geom_boxplot() +
   facet_wrap(~Udogodnienie) +
-  scale_fill_manual(values = c("Nie" = "#C6DBEF", "Tak" = "#000080")) +
+  scale_fill_manual(values = c("nie" = "#F5D5B0", "tak" = "#5D2906")) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
   labs(title = "Wpływ udogodnień na cenę za m²",
        x = "Czy posiada udogodnienie?",
@@ -323,7 +363,11 @@ wykres5 <- udogodnienia_long %>%
        fill = "Posiada")
 ggplotly(wykres5)
 ```
-Analiza wskazuje, że obecność udogodnień takich jak balkon, miejsce parkingowe oraz winda wiąże się ze statystycznie wyższą medianą ceny za m². Najsilniejszy efekt obserwowany jest w przypadku wind, co sugeruje istotne znaczenie standardu budynku dla wyceny nieruchomości.
+
+Analiza wskazuje, że obecność udogodnień takich jak balkon, miejsce
+parkingowe oraz winda wiąże się ze statystycznie wyższą medianą ceny za
+m². Najsilniejszy efekt obserwowany jest w przypadku wind, co sugeruje
+istotne znaczenie standardu budynku dla wyceny nieruchomości.
 
 ## Jak typ budynku wpływa na poziom cen?
 
@@ -336,9 +380,9 @@ wykres6 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = type, y = pricePerSquareMeter, fill = type)) +
   geom_boxplot() +
   scale_fill_manual(values = c(
-    "Apartamentowiec" = "#000080",   
-    "Kamienica" = "#4682B4",         
-    "Blok mieszkalny" = "#C6DBEF"    
+    "Apartamentowiec" = "#5D2906",   
+    "Kamienica" = "#B87333",         
+    "Blok mieszkalny" = "#F5D5B0"    
   )) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
   labs(title = "Wpływ typu budynku na cenę za m²",
@@ -348,8 +392,12 @@ wykres6 <- dane_nieruchomosci_czyste %>%
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ggplotly(wykres6)
 ```
-Wykres pokazuje wyraźne różnice cenowe pomiędzy typami zabudowy. Apartamentowce charakteryzują się najwyższymi medianami cen za m², następnie kamienice, natomiast bloki mieszkalne osiągają najniższe wartości. Różnice te odzwierciedlają zróżnicowany standard techniczny, wiek zabudowy oraz lokalizację.
 
+Wykres pokazuje wyraźne różnice cenowe pomiędzy typami zabudowy.
+Apartamentowce charakteryzują się najwyższymi medianami cen za m²,
+następnie kamienice, natomiast bloki mieszkalne osiągają najniższe
+wartości. Różnice te odzwierciedlają zróżnicowany standard techniczny,
+wiek zabudowy oraz lokalizację.
 
 ## Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
 
@@ -357,7 +405,7 @@ Wykres pokazuje wyraźne różnice cenowe pomiędzy typami zabudowy. Apartamento
 wykres7 <- dane_nieruchomosci_czyste %>%
   ggplot(aes(x = as.factor(rooms), y = pricePerSquareMeter, fill = as.factor(rooms))) +
   geom_boxplot() +
-  scale_fill_manual(values = colorRampPalette(c("#000080", "#C6DBEF")) (6)) +
+  scale_fill_manual(values = colorRampPalette(c("#5D2906", "#F5D5B0")) (6)) +
   scale_y_continuous(labels = scales::number_format(big.mark = " ")) + 
   labs(title = "Wpływ liczby pokoi na cenę za m²",
        x = "Liczba pokoi",
@@ -365,9 +413,17 @@ wykres7 <- dane_nieruchomosci_czyste %>%
        fill = "Liczba pokoi")
 ggplotly(wykres7)
 ```
-Wykres pudełkowy obrazuje rozpiętość cen za metr kwadratowy mieszkań w zależności od liczby pokoi. Najwyższe mediany cen odnotowuje się w przypadku mieszkań jednopokojowych, natomiast w lokalach dwu- i trzypokojowych obserwuje się spadek wartości cen jednostkowych. W przypadku mieszkań czteropokojowych i większych mediana cen pozostaje stosunkowo stabilna, a następnie rośnie nieznacznie, co może być efektem ograniczonej podaży oraz większego zainteresowania większymi lokalami, często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
 
-# Analiza opisowa 
+Wykres pudełkowy obrazuje rozpiętość cen za metr kwadratowy mieszkań w
+zależności od liczby pokoi. Najwyższe mediany cen odnotowuje się w
+przypadku mieszkań jednopokojowych, natomiast w lokalach dwu- i
+trzypokojowych obserwuje się spadek wartości cen jednostkowych. W
+przypadku mieszkań czteropokojowych i większych mediana cen pozostaje
+stosunkowo stabilna, a następnie rośnie nieznacznie, co może być efektem
+ograniczonej podaży oraz większego zainteresowania większymi lokalami,
+często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
+
+# Analiza opisowa
 
 ```{r}
 library(e1071)      
@@ -377,7 +433,11 @@ library(gtsummary)
 ```
 
 ## Szczegółowe statystyki cenowe wg miast
-Poniższa tabela przedstawia szczegółowe miary pozycyjne oraz miary kształtu rozkładu (skośność, kurtoza) dla ceny za metr kwadratowy w poszczególnych miastach. Pozwala to ocenić nie tylko poziom cen, ale też ich zróżnicowanie i asymetrię.
+
+Poniższa tabela przedstawia szczegółowe miary pozycyjne oraz miary
+kształtu rozkładu (skośność, kurtoza) dla ceny za metr kwadratowy w
+poszczególnych miastach. Pozwala to ocenić nie tylko poziom cen, ale też
+ich zróżnicowanie i asymetrię.
 
 ```{r}
 tabela_miasta <- dane_nieruchomosci_czyste %>%
@@ -403,7 +463,9 @@ tabela_miasta %>%
 ```
 
 ## Podsumowanie zmiennych
-Zestawienie kluczowych zmiennych w podziale na typ budynku, aby zobaczyć różnice w strukturze ofert.
+
+Zestawienie kluczowych zmiennych w podziale na typ budynku, aby zobaczyć
+różnice w strukturze ofert.
 
 ```{r}
 dane_nieruchomosci_czyste %>%
@@ -447,6 +509,7 @@ zmienne_do_korelacji <- dane_nieruchomosci_czyste %>%
 M <- cor(zmienne_do_korelacji)
 
 corrplot(M, method = "color", type = "upper", 
+         col = colorRampPalette(c("#F5D5B0", "#A0522D", "#5D2906"))(200), 
          addCoef.col = "black", 
          tl.col = "black", tl.srt = 45, 
          diag = FALSE, 
@@ -457,6 +520,7 @@ corrplot(M, method = "color", type = "upper",
 ## Współczynnik V-Cramera
 
 library(DescTools)
+
 ```{r}
 tabela_krzyzowa <- table(dane_nieruchomosci_czyste$city, dane_nieruchomosci_czyste$type)
  
