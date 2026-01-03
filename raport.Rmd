@@ -462,10 +462,12 @@ tabela_miasta %>%
   add_header_above(c(" " = 2, "Miary Położenia" = 4, "Miary Zmienności" = 2, "Kształt" = 2))
 ```
 
-## Podsumowanie zmiennych
+## Charakterystyka ofert rynkowych w podziale na typ budynku
 
-Zestawienie kluczowych zmiennych w podziale na typ budynku, aby zobaczyć
-różnice w strukturze ofert.
+Analiza zgromadzonych danych pozwala na wyraźne wyodrębnienie trzech
+głównych segmentów rynku mieszkaniowego, zróżnicowanych pod względem
+wieku, ceny oraz lokalizacji. Poniższa tabela prezentuje charakterystykę
+ofert w podziale na apartamentowce, bloki mieszkalne oraz kamienice.
 
 ```{r}
 dane_nieruchomosci_czyste %>%
@@ -492,6 +494,44 @@ dane_nieruchomosci_czyste %>%
   modify_caption("**Tabela zbiorcza: Charakterystyka ofert wg typu budynku**") %>%
   bold_labels()
 ```
+
+Najdroższą kategorię stanowią apartamentowce, które reprezentują
+nowoczesne budownictwo ze średnią datą powstania w 2017 roku. Średnia
+cena całkowita za mieszkanie w tym typie budynku wynosi blisko milion
+złotych (995 000 zł), natomiast średnia stawka za metr kwadratowy
+oscyluje wokół 18 000 złotych. Apartamentowce oferują umiarkowany metraż
+z medianą wynoszącą 58 metrów kwadratowych. W strukturze pomieszczeń
+dominują układy dwupokojwe (41%) oraz trzypokojowe (36%), co stanowi
+rynkowy standard. Mimo wysokiej ceny tego typu nieruchomości nie są
+położone w ścisłym centrum, lecz średnio 4,5 kilometra od niego.
+
+Bloki mieszkalne z kolei stanowią najliczniejszą i najbardziej
+przystępną cenowo grupę ofert z lat 80 XX wieku. Mieszkania te zazwyczaj
+są najmniejsze, z medianą powierzchni wynoszącą 51 metrów kwadratowych i
+kosztują znacznie mniej niż inne typy lokali - typowa cena całkowita to
+690 000 złotych. Atrakcyjność cenową tego segmentu potwierdza również
+najniższa na rynku stawka za metr kwadratowy, której mediana wynosi
+około 13 900 zł. W tej kategorii dominują układy dwu- i trzypokojowe,
+które stanowią zdecydowaną większość dostępnych lokali. Niższy koszt
+zakupu wiążę się z lokalizacją, bloki są oddalone od ścisłego centrum
+miasta średnio o 4,72 kilometrów.
+
+Trzecią grupą są kamienice, które wyróżniają się najstarszą historią
+oraz najlepszą lokalizacją, średnio niecałe 2 kilometry od centrum
+miasta. Mediana ceny za metr kwadratowy wynosi w tym segmencie równe 15
+000 zł, a średnia cena oscyluje wokół 805 500 zł. Oferują one
+najbardziej przestronne wnętrza o przeciętnej powierzchni 65 metrów
+kwadratowych. Warto zauważyć, że to właśnie w kamenicach najłatwiej
+znaleźć duże mieszkania, posiadające cztery lub więcej pokoi.
+
+Podsumowując, rynek nieruchomości dzieli się na trzy segmenty, z których każdy
+odpowiada na inne potrzeby klientów. Apartamentowce to oferta premium
+dla osób szukajacych nowoczesności, co wiążę się z najwyższą ceną i
+standardowym metrażem. Bloki mieszkalne stanowią natomiast opcję
+budżetową - oferują najniższą cenę zakupu, jednak kosztem tego mniej
+przestrzeni i lokalizacja z dala od centrum. Z kolei kamienice stanowią
+unikalną ofertę dla miłośników wielkomiejskiego stylu życia, łącząc
+najlepszą lokalizację z największym metrażem, przy średniej cenie.
 
 ## Macierz korelacji
 
@@ -523,7 +563,7 @@ library(DescTools)
 
 ```{r}
 tabela_krzyzowa <- table(dane_nieruchomosci_czyste$city, dane_nieruchomosci_czyste$type)
- 
+
 cramer_wynik <- CramerV(tabela_krzyzowa)
  
 cat(, round(cramer_wynik, 3), "\n")
