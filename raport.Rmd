@@ -366,3 +366,36 @@ wykres7 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres7)
 ```
 Wykres pudełkowy obrazuje rozpiętość cen za metr kwadratowy mieszkań w zależności od liczby pokoi. Najwyższe mediany cen odnotowuje się w przypadku mieszkań jednopokojowych, natomiast w lokalach dwu- i trzypokojowych obserwuje się spadek wartości cen jednostkowych. W przypadku mieszkań czteropokojowych i większych mediana cen pozostaje stosunkowo stabilna, a następnie rośnie nieznacznie, co może być efektem ograniczonej podaży oraz większego zainteresowania większymi lokalami, często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
+
+# Analiza opisowa 
+```{r}
+library(e1071)      
+library(corrplot)   
+library(kableExtra) 
+library(gtsummary) 
+```
+
+## Szczegółowe statystyki cenowe wg miast
+Poniższa tabela przedstawia szczegółowe miary pozycyjne oraz miary kształtu rozkładu (skośność, kurtoza) dla ceny za metr kwadratowy w poszczególnych miastach. Pozwala to ocenić nie tylko poziom cen, ale też ich zróżnicowanie i asymetrię.
+```{r}
+tabela_miasta <- dane_nieruchomosci_czyste %>%
+  group_by(city) %>%
+  summarise(
+    N = n(),
+    Srednia = mean(pricePerSquareMeter, na.rm = TRUE),
+    Mediana = median(pricePerSquareMeter, na.rm = TRUE),
+    Min = min(pricePerSquareMeter, na.rm = TRUE),
+    Max = max(pricePerSquareMeter, na.rm = TRUE),
+    SD = sd(pricePerSquareMeter, na.rm = TRUE),
+    IQR = IQR(pricePerSquareMeter, na.rm = TRUE),
+    Skosnosc = skewness(pricePerSquareMeter, na.rm = TRUE),
+    Kurtoza = kurtosis(pricePerSquareMeter, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Srednia))
+
+tabela_miasta %>%
+  kbl(digits = 2, caption = "Szczegółowe statystyki ceny za m² (PLN) w podziale na miasta") %>%
+  kable_paper("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  add_header_above(c(" " = 2, "Miary Położenia" = 4, "Miary Zmienności" = 2, "Kształt" = 2))
+```
