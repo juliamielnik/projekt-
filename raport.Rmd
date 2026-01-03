@@ -368,6 +368,7 @@ ggplotly(wykres7)
 Wykres pudełkowy obrazuje rozpiętość cen za metr kwadratowy mieszkań w zależności od liczby pokoi. Najwyższe mediany cen odnotowuje się w przypadku mieszkań jednopokojowych, natomiast w lokalach dwu- i trzypokojowych obserwuje się spadek wartości cen jednostkowych. W przypadku mieszkań czteropokojowych i większych mediana cen pozostaje stosunkowo stabilna, a następnie rośnie nieznacznie, co może być efektem ograniczonej podaży oraz większego zainteresowania większymi lokalami, często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
 
 # Analiza opisowa 
+
 ```{r}
 library(e1071)      
 library(corrplot)   
@@ -377,6 +378,7 @@ library(gtsummary)
 
 ## Szczegółowe statystyki cenowe wg miast
 Poniższa tabela przedstawia szczegółowe miary pozycyjne oraz miary kształtu rozkładu (skośność, kurtoza) dla ceny za metr kwadratowy w poszczególnych miastach. Pozwala to ocenić nie tylko poziom cen, ale też ich zróżnicowanie i asymetrię.
+
 ```{r}
 tabela_miasta <- dane_nieruchomosci_czyste %>%
   group_by(city) %>%
@@ -398,4 +400,56 @@ tabela_miasta %>%
   kable_paper("striped", full_width = F) %>%
   column_spec(1, bold = T) %>%
   add_header_above(c(" " = 2, "Miary Położenia" = 4, "Miary Zmienności" = 2, "Kształt" = 2))
+```
+
+## Podsumowanie zmiennych
+Zestawienie kluczowych zmiennych w podziale na typ budynku, aby zobaczyć różnice w strukturze ofert.
+
+```{r}
+dane_nieruchomosci_czyste %>%
+  mutate(type = recode(type,
+                       "apartmentBuilding" = "Apartamentowiec",
+                       "blockOfFlats" = "Blok mieszkalny",
+                       "tenement" = "Kamienica")) %>%
+  select(price, pricePerSquareMeter, squareMeters, rooms, buildYear, centreDistance, type) %>%
+  tbl_summary(
+    by = type,
+    type = all_continuous() ~ "continuous2",
+    statistic = all_continuous() ~ c("{mean} ({sd})", "{median} ({p25}, {p75})", "{min}, {max}"),
+    label = list(
+      price ~ "Cena całkowita (PLN)",
+      pricePerSquareMeter ~ "Cena za m² (PLN)",
+      squareMeters ~ "Metraż (m²)",
+      rooms ~ "Liczba pokoi",
+      buildYear ~ "Rok budowy",
+      centreDistance ~ "Dystans do centrum (km)"
+    ),
+    missing = "no"
+  ) %>%
+  modify_header(label ~ "**Zmienna**") %>%
+  modify_caption("**Tabela zbiorcza: Charakterystyka ofert wg typu budynku**") %>%
+  bold_labels()
+```
+
+## Macierz korelacji
+
+```{r}
+zmienne_do_korelacji <- dane_nieruchomosci_czyste %>%
+  select(
+    "Cena całkowita" = price,
+    "Cena za m²" = pricePerSquareMeter,
+    "Metraż" = squareMeters,
+    "Liczba pokoi" = rooms,
+    "Rok budowy" = buildYear,
+    "Dystans do centrum" = centreDistance
+  ) %>%
+  na.omit() 
+M <- cor(zmienne_do_korelacji)
+
+corrplot(M, method = "color", type = "upper", 
+         addCoef.col = "black", 
+         tl.col = "black", tl.srt = 45, 
+         diag = FALSE, 
+         title = "Macierz Korelacji Zmiennych Numerycznych", 
+         mar = c(0,0,2,0)) 
 ```
