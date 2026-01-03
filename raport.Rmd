@@ -453,3 +453,22 @@ corrplot(M, method = "color", type = "upper",
          title = "Macierz Korelacji Zmiennych Numerycznych", 
          mar = c(0,0,2,0)) 
 ```
+
+## Współczynnik V-Cramera
+
+library(DescTools)
+```{r}
+tabela_krzyzowa <- table(dane_nieruchomosci_czyste$city, dane_nieruchomosci_czyste$type)
+ 
+cramer_wynik <- CramerV(tabela_krzyzowa)
+ 
+cat(, round(cramer_wynik, 3), "\n")
+ 
+if(cramer_wynik < 0.1) {
+  cat
+} else if (cramer_wynik < 0.3) {
+  cat
+} else {
+  cat
+}
+```
