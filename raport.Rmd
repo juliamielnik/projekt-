@@ -561,6 +561,7 @@ corrplot(M, method = "color", type = "upper",
          title = "Macierz Korelacji Zmiennych Numerycznych", 
          mar = c(0,0,2,0)) 
 ```
+Analiza macierzy korelacji pokazuje, że cena całkowita mieszkania jest najsilniej związana z jego metrażem oraz ceną za metr kwadratowy, co potwierdza ich kluczową rolę w kształtowaniu wartości nieruchomości. Widoczna jest również umiarkowana zależność między ceną całkowitą a liczbą pokoi, jednak wpływ tego czynnika jest słabszy niż samej powierzchni mieszkania. Bardzo silna korelacja pomiędzy metrażem a liczbą pokoi wskazuje, że wraz ze wzrostem powierzchni mieszkania rośnie także liczba pomieszczeń. Cena za metr kwadratowy wykazuje niewielką tendencję spadkową wraz ze wzrostem metrażu i liczby pokoi, co sugeruje, że większe lokale bywają relatywnie tańsze w przeliczeniu na metr. Jednocześnie zauważalna jest dodatnia zależność pomiędzy ceną za metr kwadratowy a rokiem budowy, co oznacza, że nowsze budynki osiągają wyższe ceny jednostkowe. Analiza wskazuje także, że nowsze inwestycje częściej zlokalizowane są dalej od centrum miasta, natomiast sam dystans do centrum nie wykazuje istotnego bezpośredniego wpływu na poziom cen w analizowanym zbiorze danych.
 
 ## Współczynnik V-Cramera
 
