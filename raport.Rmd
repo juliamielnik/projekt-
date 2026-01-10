@@ -23,6 +23,7 @@ library(VIM)
 
 # Wstęp
 
+::: {style="text-align: justify;"}
 Rynek nieruchomości jest jednym z najważniejszych sektorów polskiej
 gospodarki, decyduje o możliwościach zakupu mieszkania przez Polaków,
 atrakcyjności inwestycji oraz kondycji całej branży budowlanej. W 2024
@@ -31,7 +32,9 @@ inflacji, zdolność kredytowa gospodarstw domowych wyraźnie się
 poprawiła. Niniejszy projekt koncentruje się wyłącznie na danych z
 czerwca 2024 roku, dzięki czemu pozwala dokładnie uchwycić aktualny
 poziom cen tuż po okresie dynamicznych wzrostów z poprzednich miesięcy.
+:::
 
+::: {style="text-align: justify;"}
 ## Pytania badawcze
 
 1.  Jak kształtują się **średnie ceny** całkowite oraz ceny za metr
@@ -45,9 +48,11 @@ poziom cen tuż po okresie dynamicznych wzrostów z poprzednich miesięcy.
     miejsce parkingowe, dla poziomu ceny ofertowej?
 6.  Jak **typ budynku** wpływa na poziom cen?
 7.  Jakie są różnice w cenach mieszkań w zależności od **liczby pokoi**?
+:::
 
 # Opis danych
 
+::: {style="text-align: justify;"}
 Zbiór danych zawiera **miesięczną kolekcję ofert sprzedaży z czerwca
 2024 roku z 15 największych polskich miast**.
 
@@ -80,6 +85,7 @@ Poniżej znajduje się opis najważniejszych zmiennych:
 -   `has[features]`: Zmienne binarne określające kluczowe udogodnienia,
 
 -   `cena`: Cena ofertowa sprzedaży w złotych polskich.
+:::
 
 # Analiza danych
 
@@ -97,24 +103,27 @@ VIM::aggr(dane_nieruchomosci, col=c('midnightblue','red'), numbers=TRUE, sortVar
 
 ## Czyszczenie danych
 
+::: {style="text-align: justify;"}
 Analiza wykazała, że braki danych mają charakter systemowy, ponieważ
 zmienne condition oraz buildingMaterial zawierają bardzo dużą liczbę
 wartości nieznanych. Próba usunięcia wszystkich wierszy z brakami
 doprowadziłaby do utraty ponad 80% obserwacji, co jest niedopuszczalne.
-
-W związku z tym, przyjęto dwuetapową strategię czyszczenia danych:
+W związku z tym, przyjęto dwuetapową strategię czyszczenia danych.
 
 W pierwszy etapie usunięto zmienne, które mają braki na poziomie
 przekraczającym 30%, ponieważ są zbyt niekompletne, aby je wykorzystać.
+:::
 
 ```{r}
 dane_czyste_etap1 <- dane_nieruchomosci %>%
   select(-condition, -buildingMaterial)
 ```
 
+::: {style="text-align: justify;"}
 W drugim etapie usunięto pozostałe obserwacje z brakami danych, co
 pozwoliło zachować spójność zbioru danych przy minimalnej utracie
 informacji.
+:::
 
 ```{r}
 obserwacje_przed_etap2 <- nrow(dane_czyste_etap1)
@@ -134,6 +143,7 @@ VIM::aggr(dane_nieruchomosci_czyste, col=c('midnightblue','red'), numbers=TRUE, 
 
 ## Definicja Reguł Walidacyjnych
 
+::: {style="text-align: justify;"}
 Przed przystąpieniem do analizy danych zdefiniowano i sprawdzono reguły,
 które muszą spełniać oczyszczone dane. Poprawne zdefiniowanie danych
 zapewnia, że zbiór jest spójny wewnętrznie i spełnia podstawowe kryteria
@@ -144,6 +154,7 @@ logiczne, tj:
 -   metraż i liczba pokoi przyjmuje wartości dodatnie,
 
 -   odległość od centrum przyjmuje wartości nieujemne.
+:::
 
 ```{r}
 library(validate)
@@ -157,6 +168,7 @@ rules <- validator(
 
 # Wizualizacje danych
 
+::: {style="text-align: justify;"}
 Kluczowym etapem analizy rynku nieruchomości jest przejrzysta
 prezentacja zgromadzonych informacji. Surowe dane liczbowe nie pozwalają
 na natychmiastowe dostrzeżenie trendów czy zależności, które mogą mieć
@@ -165,6 +177,7 @@ lokum. W niniejszym rozdziale poddano analizie zbiór danych dotyczący
 ofert mieszkań w 15 największych miastach Polski, wykorzystując
 zaawansowane narzędzia pakietu ggplot2 oraz interaktywne możliwości
 biblioteki plotly.
+:::
 
 ```{r}
 library(ggplot2)
@@ -190,12 +203,14 @@ wykres1 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres1)
 ```
 
+::: {style="text-align: justify;"}
 Wykres przedstawia zróżnicowanie średnich cen mieszkań pomiędzy
 analizowanymi miastami. Najwyższe wartości obserwowane są w Warszawie i
 Krakowie, a następnie w Gdyni i Gdańsku, co wskazuje na silny popyt na
 rynkach dużych aglomeracji. Niższe średnie ceny występują w miastach
 takich jak Białystok, Radom i Częstochowa, które pełnią funkcję
 mniejszych lub średnich ośrodków miejskich.
+:::
 
 ```{r}
 library(maps)
@@ -236,11 +251,13 @@ ggplot() +
   theme(legend.position = "right")
 ```
 
+::: {style="text-align: justify;"}
 Mapa przedstawia regionalne zróżnicowanie średnich cen za m² w Polsce.
 Najwyższe wartości występują w największych aglomeracjach (Warszawa,
 Kraków, Trójmiasto), natomiast niższe w miastach średnich i mniejszych,
 takich jak Radom czy Częstochowa. Wyniki potwierdzają silny wpływ
 lokalizacji i rangi jednostki miejskiej na poziom cen nieruchomości.
+:::
 
 ## Które miasta charakteryzują się najwyższymi, a które najniższymi cenami za metr kwadratowy?
 
@@ -258,12 +275,15 @@ wykres2 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres2)
 ```
 
+::: {style="text-align: justify;"}
 Wykres pudełkowy obrazuje poziom cen oraz ich zróżnicowanie wewnątrz
 poszczególnych rynków lokalnych. Warszawa, Kraków, Gdańsk i Gdynia
 charakteryzują się wyższą medianą cen za m² oraz większą zmiennością, co
 wskazuje na współwystępowanie nieruchomości o bardzo zróżnicowanym
 standardzie i lokalizacji. W pozostałych miastach rozkłady cen są
-bardziej skupione, co sugeruje większą jednorodność oferty mieszkaniowej
+bardziej skupione, co sugeruje większą jednorodność oferty
+mieszkaniowej.
+:::
 
 ## W jaki sposób powierzchnia mieszkania wpływa na jego cenę całkowitą oraz cenę za metr kwadratowy?
 
@@ -280,12 +300,14 @@ wykres3a <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres3a)
 ```
 
+::: {style="text-align: justify;"}
 Wykres rozrzutu wskazuje na silną dodatnią zależność liniową pomiędzy
 powierzchnią mieszkania a jego ceną całkowitą. Wraz ze wzrostem metrażu
 rośnie przeciętna cena nieruchomości, co potwierdza linia trendu.
 Jednocześnie obserwowany jest wzrost rozproszenia wartości cenowych dla
 większych mieszkań, co sugeruje większe zróżnicowanie standardu,
 lokalizacji oraz charakteru nieruchomości w tym segmencie.
+:::
 
 ```{r}
 # Powierzchnia vs Cena za m²
@@ -301,14 +323,17 @@ wykres3b <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres3b)
 ```
 
+::: {style="text-align: justify;"}
 Analiza zależności ceny jednostkowej od powierzchni lokalu mieszkalnego
 wskazuje na nieliniowy charakter tej relacji. Najwyższe ceny za metr
 kwadratowy obserwowane są w przypadku mieszkań o najmniejszym metrażu,
 po czym następuje ich stopniowy spadek wraz ze wzrostem powierzchni. W
 segmencie mieszkań o dużej powierzchni cena za m² ulega stabilizacji lub
 wykazuje tendencję spadkową, co pozostaje zgodne z prawidłowościami
-kształtowania się cen jednostkowych w zależności od metrażu oraz
-preferencjami popytowymi uczestników rynku nieruchomości.
+kształtowania się cen jednostkowych\
+w zależności od metrażu oraz preferencjami popytowymi uczestników rynku
+nieruchomości.
+:::
 
 ## Jak odległość od centrum miasta wpływa na poziom cen mieszkań?
 
@@ -324,6 +349,7 @@ wykres4 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres4)
 ```
 
+::: {style="text-align: justify;"}
 Wykres ilustruje relację pomiędzy ceną jednostkową lokali mieszkalnych a
 ich odległością od centrum miasta. Najwyższe wartości cen za metr
 kwadratowy występują w lokalizacjach centralnych, natomiast wraz ze
@@ -332,6 +358,7 @@ poziomu cen. Relacja ta nie ma charakteru ściśle liniowego, co wskazuje,
 że na kształtowanie się cen istotnie oddziałują również czynniki
 lokalne, takie jak poziom rozwoju infrastruktury, dostępność transportu
 publicznego oraz charakter poszczególnych dzielnic mieszkaniowych.
+:::
 
 ## Jakie znaczenie mają udogodnienia (balkon, winda, parking) dla ceny za metr kwadratowy?
 
@@ -363,10 +390,12 @@ wykres5 <- udogodnienia_long %>%
 ggplotly(wykres5)
 ```
 
+::: {style="text-align: justify;"}
 Analiza wskazuje, że obecność udogodnień takich jak balkon, miejsce
 parkingowe oraz winda wiąże się ze statystycznie wyższą medianą ceny za
 m². Najsilniejszy efekt obserwowany jest w przypadku wind, co sugeruje
 istotne znaczenie standardu budynku dla wyceny nieruchomości.
+:::
 
 ## Jak typ budynku wpływa na poziom cen?
 
@@ -392,11 +421,13 @@ wykres6 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres6)
 ```
 
+::: {style="text-align: justify;"}
 Wykres pokazuje wyraźne różnice cenowe pomiędzy typami zabudowy.
 Apartamentowce charakteryzują się najwyższymi medianami cen za m²,
 następnie kamienice, natomiast bloki mieszkalne osiągają najniższe
 wartości. Różnice te odzwierciedlają zróżnicowany standard techniczny,
 wiek zabudowy oraz lokalizację.
+:::
 
 ## Jakie są różnice w cenach mieszkań w zależności od liczby pokoi?
 
@@ -413,6 +444,7 @@ wykres7 <- dane_nieruchomosci_czyste %>%
 ggplotly(wykres7)
 ```
 
+::: {style="text-align: justify;"}
 Wykres pudełkowy obrazuje rozpiętość cen za metr kwadratowy mieszkań w
 zależności od liczby pokoi. Najwyższe mediany cen odnotowuje się w
 przypadku mieszkań jednopokojowych, natomiast w lokalach dwu- i
@@ -421,14 +453,17 @@ przypadku mieszkań czteropokojowych i większych mediana cen pozostaje
 stosunkowo stabilna, a następnie rośnie nieznacznie, co może być efektem
 ograniczonej podaży oraz większego zainteresowania większymi lokalami,
 często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
+:::
 
 # Analiza opisowa
 
+::: {style="text-align: justify;"}
 Poniższa część projektu zawiera podstawowe statystyki opisowe,
 pozwalające na charakterystykę rozkładu cen i metrażu w analizowanych
 miastach. Analizie poddano również korelację między zmiennymi, co
 pozwala na ocenę siły powiązań między ceną a pozostałymi parametrami
 ofert.
+:::
 
 ```{r}
 library(e1071)
@@ -440,10 +475,12 @@ library(DescTools)
 
 ## Szczegółowe statystyki cenowe wg miast
 
+::: {style="text-align: justify;"}
 Poniższa tabela przedstawia szczegółowe miary pozycyjne oraz miary
 kształtu rozkładu (skośność, kurtoza) dla ceny za metr kwadratowy w
 poszczególnych miastach. Pozwala to ocenić nie tylko poziom cen, ale też
 ich zróżnicowanie i asymetrię.
+:::
 
 ```{r}
 tabela_miasta <- dane_nieruchomosci_czyste %>%
@@ -468,6 +505,7 @@ tabela_miasta %>%
   add_header_above(c(" " = 2, "Miary Położenia" = 4, "Miary Zmienności" = 2, "Kształt" = 2))
 ```
 
+::: {style="text-align: justify;"}
 Analiza danych wskazuje na wyraźną dominację cenową Warszawy, gdzie
 średnia stawka za metr kwadratowy (ok. 18 700 PLN) znacznie przewyższa
 poziomy notowane w pozostałych ośrodkach. Za stolicą plasuje się grupa
@@ -491,13 +529,16 @@ podczas gdy typowa oferta rynkowa (mediana) jest nieco tańsza. Jedynie w
 miastach takich jak Rzeszów czy Szczecin rozkład jest bliski
 symetrycznemu, co sugeruje bardziej zrównoważoną strukturę cenową bez
 ekstremalnych odchyleń w górę.
+:::
 
 ## Charakterystyka ofert rynkowych w podziale na typ budynku
 
+::: {style="text-align: justify;"}
 Analiza zgromadzonych danych pozwala na wyraźne wyodrębnienie trzech
 głównych segmentów rynku mieszkaniowego, zróżnicowanych pod względem
 wieku, ceny oraz lokalizacji. Poniższa tabela prezentuje charakterystykę
 ofert w podziale na apartamentowce, bloki mieszkalne oraz kamienice.
+:::
 
 ```{r}
 dane_nieruchomosci_czyste %>%
@@ -525,6 +566,7 @@ dane_nieruchomosci_czyste %>%
   bold_labels()
 ```
 
+::: {style="text-align: justify;"}
 Najdroższą kategorię stanowią apartamentowce, które reprezentują
 nowoczesne budownictwo ze średnią datą powstania w 2017 roku. Średnia
 cena całkowita za mieszkanie w tym typie budynku wynosi blisko milion
@@ -562,6 +604,7 @@ budżetową - oferują najniższą cenę zakupu, jednak kosztem tego mniej
 przestrzeni i lokalizacja z dala od centrum. Z kolei kamienice stanowią
 unikalną ofertę dla miłośników wielkomiejskiego stylu życia, łącząc
 najlepszą lokalizację z największym metrażem, przy średniej cenie.
+:::
 
 ## Macierz korelacji
 
@@ -587,6 +630,7 @@ corrplot(M, method = "color", type = "upper",
          mar = c(0,0,2,0)) 
 ```
 
+::: {style="text-align: justify;"}
 Analiza macierzy korelacji pokazuje, że cena całkowita mieszkania jest
 najsilniej związana z jego metrażem oraz ceną za metr kwadratowy, co
 potwierdza ich kluczową rolę w kształtowaniu wartości nieruchomości.
@@ -603,6 +647,7 @@ wyższe ceny jednostkowe. Analiza wskazuje także, że nowsze inwestycje
 częściej zlokalizowane są dalej od centrum miasta, natomiast sam dystans
 do centrum nie wykazuje istotnego bezpośredniego wpływu na poziom cen w
 analizowanym zbiorze danych.
+:::
 
 ## Współczynnik V-Cramera
 
@@ -620,6 +665,16 @@ if(cramer_wynik < 0.1) {
 ```
 
 # Wnioskowanie statystyczne
+
+::: {style="text-align: justify;"}
+Niniejszy rozdział poświęcony został pogłębionej analizie statystycznej,
+mającej na celu zidentyfikowanie kluczowych czynników wpływających na
+kształtowanie się cen mieszkań. W odróżnieniu od wcześniejszej analizy
+opisowej, rozdział skupia się na weryfikacji hipotez badawczych i ocenie
+istotności statystycznej zaobserwowanych zależności, wykorzystując w tym
+celu odpowiednie testy statystyczne (m.in. metody nieparametryczne oraz
+analizę korelacji).
+:::
 
 ```{r}
 library(ggstatsplot)
@@ -679,7 +734,7 @@ dane_nieruchomosci_czyste %>%
   )
 ```
 
-## Wpływ powierzchni na cenę 
+## Wpływ powierzchni na cenę
 
 ```{r}
 p1 <- ggscatterstats(
@@ -788,7 +843,8 @@ ggbetweenstats(
     scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")))
 )
 ```
-## Liczba pokoi a cena 
+
+## Wpływ liczby pokoi na cenę
 
 ```{r}
 dane_pokoje <- dane_nieruchomosci_czyste %>%
