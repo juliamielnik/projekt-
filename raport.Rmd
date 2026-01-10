@@ -431,7 +431,7 @@ pozwala na ocenę siły powiązań między ceną a pozostałymi parametrami
 ofert.
 
 ```{r}
-library(e1071)      
+library(e1071)
 library(corrplot)   
 library(kableExtra) 
 library(gtsummary)
@@ -649,7 +649,6 @@ dane_nieruchomosci_czyste %>%
   modify_caption("**Tabela 1. Porównanie cen w miastach (Mediana + Test Kruskala-Wallisa)**")
 ```
 
-
 ## Ranking cenowy miast
 
 ```{r}
@@ -679,7 +678,6 @@ dane_nieruchomosci_czyste %>%
     legend.position = "none"
   )
 ```
-
 
 ## Wpływ powierzchni na cenę 
 
@@ -714,4 +712,79 @@ p2 <- ggscatterstats(
  
 p1
 p2
+```
+
+## Wpływ odległości od centrum na cenę
+
+```{r}
+ggscatterstats(
+  data = dane_nieruchomosci_czyste,
+  x = centreDistance,
+  y = pricePerSquareMeter,
+  type = "nonparametric", 
+  marginal = FALSE,     
+  point.args = list(alpha = 0.1, color = "#B87333", size = 2),
+  smooth.line.args = list(method = "lm", color = "#5D2906", size = 1.2, se = FALSE),
+  title = "Wpływ lokalizacji na cenę",
+  xlab = "Odległość od centrum (km)",
+  ylab = "Cena za m² (PLN)"
+) +
+  scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN"))
+```
+
+## Wpływ udogodnień na cenę
+
+```{r}
+dane_udogodnienia <- dane_nieruchomosci_czyste %>%
+  select(pricePerSquareMeter, hasBalcony, hasElevator, hasParkingSpace) %>%
+  pivot_longer(cols = c(hasBalcony, hasElevator, hasParkingSpace), 
+               names_to = "Udogodnienie", 
+               values_to = "Posiada") %>%
+  mutate(Udogodnienie = recode(Udogodnienie, 
+                               "hasBalcony" = "Balkon",
+                               "hasElevator" = "Winda",
+                               "hasParkingSpace" = "Parking"),
+         Posiada = ifelse(Posiada == TRUE, "TAK", "NIE"))
+ 
+grouped_ggbetweenstats(
+  data = dane_udogodnienia,
+  x = Posiada,
+  y = pricePerSquareMeter,
+  grouping.var = Udogodnienie, 
+  type = "nonparametric",    
+  annotation.args = list(title = "Wpływ udogodnień na cenę za m²"),
+  xlab = "Dostępność udogodnienia",
+  ylab = "Cena za m² (PLN)",
+  ggplot.component = list(
+    scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")),
+    scale_color_manual(values = c("#B87333", "#5D2906"))),
+  pairwise.comparisons = FALSE,
+  results.subtitle = TRUE
+)
+```
+
+## Wpływ typu budynku na cenę
+
+```{r}
+dane_typ <- dane_nieruchomosci_czyste %>%
+  filter(!is.na(type)) %>% 
+  mutate(type_pl = recode(type, 
+                          "blockOfFlats" = "Blok", 
+                          "tenement" = "Kamienica", 
+                          "apartmentBuilding" = "Apartamentowiec"))
+ggbetweenstats(
+  data = dane_typ,
+  x = type_pl,
+  y = pricePerSquareMeter,
+  type = "nonparametric", 
+  title = "Ceny mieszkań wg typu budynku",
+  xlab = "Rodzaj zabudowy",
+  ylab = "Cena za m² (PLN)",
+  pairwise.comparisons = TRUE,
+  results.subtitle = TRUE,
+  ggplot.component = list(
+    scale_fill_manual(values = c("#F5D5B0", "#B87333", "#5D2906")), 
+    scale_color_manual(values = c("#F5D5B0", "#B87333", "#5D2906")),
+    scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")))
+)
 ```
