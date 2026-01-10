@@ -788,3 +788,27 @@ ggbetweenstats(
     scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")))
 )
 ```
+## Liczba pokoi a cena 
+
+```{r}
+dane_pokoje <- dane_nieruchomosci_czyste %>%
+  filter(rooms >= 1 & rooms <= 4) %>%
+  mutate(pokoje_f = as.factor(paste(rooms, "pok.")))
+
+ggbetweenstats(
+  data = dane_pokoje,
+  x = pokoje_f,
+  y = pricePerSquareMeter,
+  type = "nonparametric", 
+  title = "Cena za m² w zależności od liczby pokoi",
+  xlab = "Liczba pokoi",
+  ylab = "Cena za m² (PLN)",
+  pairwise.comparisons = TRUE,
+  results.subtitle = TRUE,
+  ggplot.component = list(
+    scale_fill_manual(values = colorRampPalette(c("#F5D5B0", "#B87333", "#5D2906"))(4)),
+    scale_color_manual(values = colorRampPalette(c("#F5D5B0", "#B87333", "#5D2906"))(4)),
+    
+    scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")))
+)
+```
