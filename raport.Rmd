@@ -578,3 +578,33 @@ if(cramer_wynik < 0.1) {
   cat("Oznacza to umiarkowany lub silny związek.")
 }
 ```
+# Wnioskowanie statystyczne 
+
+```{r}
+library(ggstatsplot)
+library(reporttools)
+library(patchwork)
+library(gtsummary)
+```
+
+## Średnie ceny w miastach
+
+```{r}
+dane_nieruchomosci_czyste %>%
+  select(city, price, pricePerSquareMeter) %>% 
+  tbl_summary(
+    by = city, 
+    type = all_continuous() ~ "continuous2", 
+    statistic = all_continuous() ~ c("{median} ({p25}, {p75})", "{min}, {max}"), 
+    label = list(
+      price ~ "Cena całkowita (PLN)",
+      pricePerSquareMeter ~ "Cena za m² (PLN)"
+    ),
+    missing = "no" 
+  ) %>%
+  add_p() %>% 
+  bold_labels() %>%
+  modify_header(label = "**Zmienna**") %>%
+  modify_caption("**Tabela 1. Porównanie cen w miastach (Mediana + Test Kruskala-Wallisa)**")
+```
+
