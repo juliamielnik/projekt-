@@ -424,7 +424,11 @@ często poszukiwanymi przez gospodarstwa domowe o wyższych dochodach.
 
 # Analiza opisowa
 
-Poniższa część projektu zawiera podstawowe statystyki opisowe, pozwalające na charakterystykę rozkładu cen i metrażu w analizowanych miastach. Analizie poddano również korelację między zmiennymi, co pozwala na ocenę siły powiązań między ceną a pozostałymi parametrami ofert.
+Poniższa część projektu zawiera podstawowe statystyki opisowe,
+pozwalające na charakterystykę rozkładu cen i metrażu w analizowanych
+miastach. Analizie poddano również korelację między zmiennymi, co
+pozwala na ocenę siły powiązań między ceną a pozostałymi parametrami
+ofert.
 
 ```{r}
 library(e1071)      
@@ -463,9 +467,30 @@ tabela_miasta %>%
   column_spec(1, bold = T) %>%
   add_header_above(c(" " = 2, "Miary Położenia" = 4, "Miary Zmienności" = 2, "Kształt" = 2))
 ```
-Analiza danych wskazuje na wyraźną dominację cenową Warszawy, gdzie średnia stawka za metr kwadratowy (ok. 18 700 PLN) znacznie przewyższa poziomy notowane w pozostałych ośrodkach. Za stolicą plasuje się grupa miast o wysokich wycenach, do której należą Kraków, Gdańsk i Gdynia, osiągając pułap powyżej 14 500 PLN/m². Na przeciwległym końcu zestawienia znajdują się Częstochowa i Radom z cenami w okolicach 7 000 PLN/m². Taki układ danych obrazuje skalę dysproporcji na polskim rynku - stawki w najdroższym mieście są ponad dwukrotnie wyższe niż w ośrodkach zamykających ranking.
-Analiza miar zmienności ujawnia, że najdroższe rynki są jednocześnie najbardziej niejednorodne. Szczególnie wyróżnia się Gdynia, która mimo niższej średniej niż Warszawa, posiada najwyższe odchylenie standardowe (ponad 5 000 PLN) oraz bardzo wysoką cenę maksymalną (ponad 30 000 PLN/m²). Sugeruje to silną obecność luksusowych inwestycji nadmorskich, które znacząco odbiegają od standardowych ofert. Z kolei rynki o niższych cenach (Radom, Częstochowa) charakteryzują się znacznie mniejszą zmiennością, co świadczy o większej jednolitości ofert.
-Warto również zwrócić uwagę na dodatnią skośność rozkładu w większości miast (najsilniejszą w Gdyni: 1.18 i Krakowie: 0.92). Oznacza to, że średnie ceny są zawyżane przez "ogon" drogich apartamentów, podczas gdy typowa oferta rynkowa (mediana) jest nieco tańsza. Jedynie w miastach takich jak Rzeszów czy Szczecin rozkład jest bliski symetrycznemu, co sugeruje bardziej zrównoważoną strukturę cenową bez ekstremalnych odchyleń w górę.
+
+Analiza danych wskazuje na wyraźną dominację cenową Warszawy, gdzie
+średnia stawka za metr kwadratowy (ok. 18 700 PLN) znacznie przewyższa
+poziomy notowane w pozostałych ośrodkach. Za stolicą plasuje się grupa
+miast o wysokich wycenach, do której należą Kraków, Gdańsk i Gdynia,
+osiągając pułap powyżej 14 500 PLN/m². Na przeciwległym końcu
+zestawienia znajdują się Częstochowa i Radom z cenami w okolicach 7 000
+PLN/m². Taki układ danych obrazuje skalę dysproporcji na polskim rynku -
+stawki w najdroższym mieście są ponad dwukrotnie wyższe niż w ośrodkach
+zamykających ranking. Analiza miar zmienności ujawnia, że najdroższe
+rynki są jednocześnie najbardziej niejednorodne. Szczególnie wyróżnia
+się Gdynia, która mimo niższej średniej niż Warszawa, posiada najwyższe
+odchylenie standardowe (ponad 5 000 PLN) oraz bardzo wysoką cenę
+maksymalną (ponad 30 000 PLN/m²). Sugeruje to silną obecność luksusowych
+inwestycji nadmorskich, które znacząco odbiegają od standardowych ofert.
+Z kolei rynki o niższych cenach (Radom, Częstochowa) charakteryzują się
+znacznie mniejszą zmiennością, co świadczy o większej jednolitości
+ofert. Warto również zwrócić uwagę na dodatnią skośność rozkładu w
+większości miast (najsilniejszą w Gdyni: 1.18 i Krakowie: 0.92). Oznacza
+to, że średnie ceny są zawyżane przez "ogon" drogich apartamentów,
+podczas gdy typowa oferta rynkowa (mediana) jest nieco tańsza. Jedynie w
+miastach takich jak Rzeszów czy Szczecin rozkład jest bliski
+symetrycznemu, co sugeruje bardziej zrównoważoną strukturę cenową bez
+ekstremalnych odchyleń w górę.
 
 ## Charakterystyka ofert rynkowych w podziale na typ budynku
 
@@ -529,10 +554,10 @@ najbardziej przestronne wnętrza o przeciętnej powierzchni 65 metrów
 kwadratowych. Warto zauważyć, że to właśnie w kamenicach najłatwiej
 znaleźć duże mieszkania, posiadające cztery lub więcej pokoi.
 
-Podsumowując, rynek nieruchomości dzieli się na trzy segmenty, z których każdy
-odpowiada na inne potrzeby klientów. Apartamentowce to oferta premium
-dla osób szukajacych nowoczesności, co wiążę się z najwyższą ceną i
-standardowym metrażem. Bloki mieszkalne stanowią natomiast opcję
+Podsumowując, rynek nieruchomości dzieli się na trzy segmenty, z których
+każdy odpowiada na inne potrzeby klientów. Apartamentowce to oferta
+premium dla osób szukajacych nowoczesności, co wiążę się z najwyższą
+ceną i standardowym metrażem. Bloki mieszkalne stanowią natomiast opcję
 budżetową - oferują najniższą cenę zakupu, jednak kosztem tego mniej
 przestrzeni i lokalizacja z dala od centrum. Z kolei kamienice stanowią
 unikalną ofertę dla miłośników wielkomiejskiego stylu życia, łącząc
@@ -561,10 +586,25 @@ corrplot(M, method = "color", type = "upper",
          title = "Macierz Korelacji Zmiennych Numerycznych", 
          mar = c(0,0,2,0)) 
 ```
-Analiza macierzy korelacji pokazuje, że cena całkowita mieszkania jest najsilniej związana z jego metrażem oraz ceną za metr kwadratowy, co potwierdza ich kluczową rolę w kształtowaniu wartości nieruchomości. Widoczna jest również umiarkowana zależność między ceną całkowitą a liczbą pokoi, jednak wpływ tego czynnika jest słabszy niż samej powierzchni mieszkania. Bardzo silna korelacja pomiędzy metrażem a liczbą pokoi wskazuje, że wraz ze wzrostem powierzchni mieszkania rośnie także liczba pomieszczeń. Cena za metr kwadratowy wykazuje niewielką tendencję spadkową wraz ze wzrostem metrażu i liczby pokoi, co sugeruje, że większe lokale bywają relatywnie tańsze w przeliczeniu na metr. Jednocześnie zauważalna jest dodatnia zależność pomiędzy ceną za metr kwadratowy a rokiem budowy, co oznacza, że nowsze budynki osiągają wyższe ceny jednostkowe. Analiza wskazuje także, że nowsze inwestycje częściej zlokalizowane są dalej od centrum miasta, natomiast sam dystans do centrum nie wykazuje istotnego bezpośredniego wpływu na poziom cen w analizowanym zbiorze danych.
+
+Analiza macierzy korelacji pokazuje, że cena całkowita mieszkania jest
+najsilniej związana z jego metrażem oraz ceną za metr kwadratowy, co
+potwierdza ich kluczową rolę w kształtowaniu wartości nieruchomości.
+Widoczna jest również umiarkowana zależność między ceną całkowitą a
+liczbą pokoi, jednak wpływ tego czynnika jest słabszy niż samej
+powierzchni mieszkania. Bardzo silna korelacja pomiędzy metrażem a
+liczbą pokoi wskazuje, że wraz ze wzrostem powierzchni mieszkania rośnie
+także liczba pomieszczeń. Cena za metr kwadratowy wykazuje niewielką
+tendencję spadkową wraz ze wzrostem metrażu i liczby pokoi, co sugeruje,
+że większe lokale bywają relatywnie tańsze w przeliczeniu na metr.
+Jednocześnie zauważalna jest dodatnia zależność pomiędzy ceną za metr
+kwadratowy a rokiem budowy, co oznacza, że nowsze budynki osiągają
+wyższe ceny jednostkowe. Analiza wskazuje także, że nowsze inwestycje
+częściej zlokalizowane są dalej od centrum miasta, natomiast sam dystans
+do centrum nie wykazuje istotnego bezpośredniego wpływu na poziom cen w
+analizowanym zbiorze danych.
 
 ## Współczynnik V-Cramera
-
 
 ```{r}
 tabela_krzyzowa <- table(dane_nieruchomosci_czyste$city, dane_nieruchomosci_czyste$type)
@@ -578,7 +618,8 @@ if(cramer_wynik < 0.1) {
   cat("Oznacza to umiarkowany lub silny związek.")
 }
 ```
-# Wnioskowanie statystyczne 
+
+# Wnioskowanie statystyczne
 
 ```{r}
 library(ggstatsplot)
@@ -608,3 +649,69 @@ dane_nieruchomosci_czyste %>%
   modify_caption("**Tabela 1. Porównanie cen w miastach (Mediana + Test Kruskala-Wallisa)**")
 ```
 
+
+## Ranking cenowy miast
+
+```{r}
+test_wynik <- kruskal.test(pricePerSquareMeter ~ city, data = dane_nieruchomosci_czyste)
+p_val <- format.pval(test_wynik$p.value, digits = 3, eps = 0.001)
+chi_sq <- round(test_wynik$statistic, 2)
+ 
+dane_nieruchomosci_czyste %>%
+  mutate(city = reorder(city, pricePerSquareMeter, FUN = median)) %>%
+  ggplot(aes(x = city, y = pricePerSquareMeter, fill = city)) +
+  geom_boxplot(outlier.alpha = 0.3, outlier.size = 1) +
+  stat_summary(fun = mean, geom = "point", shape = 23, size = 3, fill = "white") +
+  scale_y_continuous(labels = function(x) paste(x, "PLN")) +
+  scale_fill_manual(values = colorRampPalette(c("#F5D5B0", "#5D2906"))(15))+ 
+  labs(
+    title = "Ranking cen mieszkań w miastach (od najtańszych do najdroższych)",
+    subtitle = paste0("Test Kruskala-Wallisa: Chi2 = ", chi_sq, ", p-value: ", p_val, 
+                      " (Różnice są istotne statystycznie)"),
+    x = NULL,
+    y = "Cena za m²"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 10, face = "bold"),
+    plot.title = element_text(face = "bold", size = 14),
+    panel.grid.major.x = element_blank(), 
+    legend.position = "none"
+  )
+```
+
+
+## Wpływ powierzchni na cenę 
+
+```{r}
+p1 <- ggscatterstats(
+  data = filter(dane_nieruchomosci_czyste, squareMeters < 150), 
+  x = squareMeters,
+  y = price,
+  type = "nonparametric", 
+  marginal = FALSE,
+  point.args = list(alpha = 0.1, color = "#B87333", size = 2),
+  smooth.line.args = list(method = "lm", color = "#5D2906", size = 1.2, se = FALSE),
+  title = "A. Korelacja: Metraż vs Cena Całkowita",
+  xlab = "Metraż (m²)",
+  ylab = "Cena całkowita (PLN)"
+) +
+  scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN"))
+ 
+p2 <- ggscatterstats(
+  data = filter(dane_nieruchomosci_czyste, squareMeters < 150),
+  x = squareMeters,
+  y = pricePerSquareMeter,
+  type = "nonparametric", 
+  marginal = FALSE,
+  point.args = list(alpha = 0.1, color = "#B87333", size = 2),
+  smooth.line.args = list(method = "lm", color = "#5D2906", size = 1.2, se = FALSE),
+  title = "B. Korelacja: Metraż vs Cena za m²",
+  xlab = "Metraż (m²)",
+  ylab = "Cena za m² (PLN)"
+) +
+  scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN"))
+ 
+p1
+p2
+```
