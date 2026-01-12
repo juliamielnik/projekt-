@@ -13,7 +13,7 @@ editor_options:
 
 ```{r setup, include=FALSE}
 ## Global options
-knitr::opts_chunk$set(cache = TRUE)
+knitr::opts_chunk$set(cache = TRUE, echo = FALSE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(readr)
 dane_nieruchomosci <- read_csv("dane_nieruchomosci/apartments_pl_2024_06.csv")
@@ -790,33 +790,66 @@ ggscatterstats(
 ## Wpływ udogodnień na cenę
 
 ```{r}
-dane_udogodnienia <- dane_nieruchomosci_czyste %>%
+dane_udogodnienie <- dane_nieruchomosci_czyste %>%
   select(pricePerSquareMeter, hasBalcony, hasElevator, hasParkingSpace) %>%
   pivot_longer(cols = c(hasBalcony, hasElevator, hasParkingSpace), 
                names_to = "Udogodnienie", 
-               values_to = "Posiada") %>%
-  mutate(Udogodnienie = recode(Udogodnienie, 
-                               "hasBalcony" = "Balkon",
-                               "hasElevator" = "Winda",
-                               "hasParkingSpace" = "Parking"),
-         Posiada = ifelse(Posiada == TRUE, "TAK", "NIE"))
- 
+               values_to = "Status") %>%
+  mutate(
+    Udogodnienie = recode(Udogodnienie, 
+                          "hasBalcony" = "Balkon",
+                          "hasElevator" = "Winda",
+                          "hasParkingSpace" = "Parking"),
+    Posiada = ifelse(Status == "yes", "TAK", "NIE"))
+
 grouped_ggbetweenstats(
-  data = dane_udogodnienia,
+  data = dane_udogodnienie,
   x = Posiada,
   y = pricePerSquareMeter,
   grouping.var = Udogodnienie, 
   type = "nonparametric",    
+  results.subtitle = FALSE, 
   annotation.args = list(title = "Wpływ udogodnień na cenę za m²"),
   xlab = "Dostępność udogodnienia",
   ylab = "Cena za m² (PLN)",
+  
   ggplot.component = list(
     scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")),
-    scale_color_manual(values = c("#B87333", "#5D2906"))),
-  pairwise.comparisons = FALSE,
-  results.subtitle = TRUE
-)
+    scale_color_manual(values = c("#B87333", "#5D2906")), 
+    theme(axis.text = element_text(size = 10, face = "bold"))),
+  pairwise.comparisons = FALSE)
+
+dane_udogodnienie %>%
+  select(Udogodnienie, Posiada, pricePerSquareMeter) %>%
+  tbl_strata(
+    strata = Udogodnienie,
+    .tbl_fun = ~ .x %>%
+      tbl_summary(by = Posiada, 
+                  type = all_continuous() ~ "continuous2",
+                  statistic = all_continuous() ~ c("{median}", "{p25}, {p75}"),
+                  label = pricePerSquareMeter ~ "Cena za m²") %>%
+      add_p() %>% 
+      bold_p())
 ```
+
+::: {style="text-align: justify;"}
+Przeprowadzona analiza statystyczna wykazała, że wpływ poszczególnych
+udogodnień na cenę metra kwadratowego jest silnie zróżnicowany.
+Najważniejszym czynnikiem cenotwórczym w badanej próbie okazała się
+obecność windy. Mieszkania w budynkach wyposażonych w windę osiągają
+zdecydowanie wyższe wyceny rynkowe – mediana ceny wynosi w tej grupie 16
+400 PLN/m², podczas gdy w budynkach bez windy to jedynie 12 587 PLN/m².
+Różnica ta jest wysoce istotna statystycznie. Istotną statystycznie
+różnicę odnotowano również w przypadku miejsca parkingowego. Lokale
+oferujące to udogodnienie charakteryzują się wyższą medianą ceny w
+porównaniu do ofert bez dedykowanego parkingu. Zaskakującym wynikiem
+jest natomiast brak istotnego statystycznie wpływu balkonu na cenę za
+metr kwadratowy (p=0,4). Mediana cen dla mieszkań bez balkonu (14 900
+PLN/m²) jest zbliżona do tych z balkonem (14 797 PLN/m²). Sugeruje to,
+że o ile balkon może być atutem przy wyborze mieszkania, nie jest on
+czynnikiem, który samodzielnie determinuje wyższą stawkę za metr
+kwadratowy w skali całego rynku.
+:::
 
 ## Wpływ typu budynku na cenę
 
@@ -844,6 +877,20 @@ ggbetweenstats(
 )
 ```
 
+::: {style="text-align: justify;"}
+Przeprowadzona analiza wykazała, że rodzaj zabudowy jest jednym z
+kluczowych czynników różnicujących ceny na rynku nieruchomości. Test
+Kruskala-Wallisa oraz analizy post-hoc potwierdziły istnienie silnych,
+istotnych statystycznie różnic pomiędzy wszystkimi trzema badanymi
+grupami. Zdecydowanym liderem cenowym są apartamentowce, dla których
+mediana ceny wynosi 18 245 PLN/m². Na przeciwległym biegunie znajdują
+się mieszkania w blokach, które stanowią najtańszy segment rynku z
+medianą ceny na poziomie 13 907 PLN/m². Jest to segment najbardziej
+dostępny cenowo.Pozycję pośrednią zajmują kamienice, osiągając medianę
+15 000 PLN/m². Są one droższe od bloków, ale wciąż znacząco tańsze od
+apartamentowców.
+:::
+
 ## Wpływ liczby pokoi na cenę
 
 ```{r}
@@ -868,3 +915,20 @@ ggbetweenstats(
     scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN")))
 )
 ```
+
+::: {style="text-align: justify;"}
+Analiza cen w zależności od liczby pokoi została celowo zawężona do
+lokali posiadających od 1 do 4 pomieszczeń, aby skupić się na
+najbardziej reprezentatywnym segmencie rynku i wyeliminować nieliczne
+oferty wielopokojowe (powyżej 5 pokoi), które jako wartości skrajne
+mogłyby zaburzyć rzetelność statystyczną badania. Wyniki jednoznacznie
+wskazują na silną odwrotną korelację, gdzie wraz ze wzrostem liczby
+pokoi spada cena ofertowa za metr kwadratowy. Zdecydowanym liderem
+cenowym są kawalerki, których mediana ceny osiąga poziom 17 969 PLN/m²,
+co jest wartością wyższą niż w pozostałych grupach i moze wynikać z
+popytu inwestycyjnego na najmniejsze metraże. Wyraźny spadek ceny
+widoczny jest już przy mieszkaniach 2-pokojowych, gdzie mediana wynosi
+15 530 PLN/m². Tendencja ta wyhamowuje przy większych lokalach, gdzie
+mieszkania 3-pokojowe (13 979 PLN/m²) oraz 4-pokojowe (13 844 PLN/m²)
+osiągają zbliżone do siebie, najniższe w zestawieniu wyceny jednostkowe.
+:::
