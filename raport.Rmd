@@ -703,6 +703,10 @@ dane_nieruchomosci_czyste %>%
   modify_header(label = "**Zmienna**") %>%
   modify_caption("**Tabela 1. Porównanie cen w miastach (Mediana + Test Kruskala-Wallisa)**")
 ```
+::: {style="text-align: justify;"}
+Tabela przedstawia wyraźne różnice między rynkami mieszkaniowymi w analizowanych miastach. Kraków, Gdańsk i Gdynia wyróżniają się najwyższymi medianami zarówno cen całkowitych, jak i cen za m², co potwierdza silny popyt i wysoką atrakcyjność tych lokalizacji. Jednocześnie właśnie tam widoczne są najszersze zakresy cen (min–max), co wskazuje na duże zróżnicowanie oferty – od mieszkań standardowych po bardzo drogie nieruchomości.
+Miasta takie jak Częstochowa, Bydgoszcz i Białystok charakteryzują się znacznie niższymi medianami cen, a także mniejszą zmiennością, co sugeruje bardziej jednorodny rynek i lepszą dostępność cenową. Katowice plasują się pośrodku – ceny są wyższe niż w mniejszych miastach, ale wyraźnie niższe niż w największych ośrodkach turystyczno-akademickich.
+Analiza cen za m² pokazuje, że różnice między miastami są jeszcze wyraźniejsze niż w przypadku cen całkowitych, co oznacza, że lokalizacja ma kluczowe znaczenie niezależnie od metrażu mieszkania.
 
 ## Ranking cenowy miast
 
@@ -733,6 +737,10 @@ dane_nieruchomosci_czyste %>%
     legend.position = "none"
   )
 ```
+::: {style="text-align: justify;"}
+Przeprowadzona analiza przedstawia ranking cen mieszkań za m² w miastach - od najtańszych do najdroższych. Najniższe mediany cen obserwujemy w Radomiu i Częstochowie, gdzie rynek jest relatywnie jednorodny, a rozstęp cen niewielki. Wraz z przechodzeniem do kolejnych miast (m.in. Bydgoszcz, Łódź, Katowice, Szczecin) ceny stopniowo rosną, a zmienność zaczyna się zwiększać.
+Wyraźny skok cen widoczny jest w Poznaniu i Wrocławiu, a najwyższe wartości osiągają Gdynia, Gdańsk, Kraków i Warszawa. W tych miastach nie tylko mediany są najwyższe, ale też występuje duża liczba obserwacji skrajnych, co wskazuje na obecność bardzo drogich mieszkań (np. inwestycyjnych i premium).
+Test Kruskal–Wallisa (p < 0,001) potwierdza, że różnice cen między miastami są istotne statystycznie, co oznacza, że lokalizacja ma kluczowy wpływ na poziom cen za m², a rynki mieszkaniowe w poszczególnych miastach znacząco się od siebie różnią.
 
 ## Wpływ powierzchni na cenę
 
@@ -768,6 +776,10 @@ p2 <- ggscatterstats(
 p1
 p2
 ```
+::: {style="text-align: justify;"}
+Na wykresie A widoczna jest silna dodatnia zależność między metrażem a ceną całkowitą mieszkania (ρ Spearmana = 0,60; p < 0,001). Oznacza to, że wraz ze wzrostem powierzchni mieszkania cena całkowita wyraźnie rośnie. Jednocześnie duże rozproszenie punktów, szczególnie dla większych metraży, wskazuje na istotny wpływ innych czynników (np. lokalizacji, standardu), które różnicują ceny mieszkań o podobnej powierzchni.
+
+Z kolei wykres B pokazuje słabą, lecz istotną statystycznie ujemną korelację między metrażem a ceną za m² (ρ = −0,12; p < 0,001). Sugeruje to, że większe mieszkania są przeciętnie tańsze w przeliczeniu na metr kwadratowy, podczas gdy mniejsze lokale osiągają wyższe ceny jednostkowe. Efekt ten jest jednak niewielki, co oznacza, że metraż sam w sobie ma ograniczony wpływ na cenę za m².
 
 ## Wpływ odległości od centrum na cenę
 
@@ -786,6 +798,9 @@ ggscatterstats(
 ) +
   scale_y_continuous(labels = function(x) paste(format(x, big.mark = " ", scientific = FALSE), "PLN"))
 ```
+::: {style="text-align: justify;"}
+Wykres przedstawia zależność między odległością od centrum miasta a ceną za m². Zaobserwowana korelacja Spearmana jest bardzo słaba, lecz istotna statystycznie (ρ = 0,05; p < 0,001), co oznacza, że sama odległość od centrum ma niewielki wpływ na poziom cen.
+Rozkład punktów wskazuje na duże zróżnicowanie cen na każdej odległości - zarówno blisko centrum, jak i na obrzeżach występują mieszkania tanie i drogie. Sugeruje to, że o cenie w większym stopniu decydują inne czynniki lokalizacyjne, takie jak standard budynku, dostęp do infrastruktury czy charakter dzielnicy, a nie sama fizyczna odległość od centrum.
 
 ## Wpływ udogodnień na cenę
 
