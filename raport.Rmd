@@ -780,8 +780,8 @@ p2
 ```
 ::: {style="text-align: justify;"}
 Na wykresie A widoczna jest silna dodatnia zależność między metrażem a ceną całkowitą mieszkania (ρ Spearmana = 0,60; p < 0,001). Oznacza to, że wraz ze wzrostem powierzchni mieszkania cena całkowita wyraźnie rośnie. Jednocześnie duże rozproszenie punktów, szczególnie dla większych metraży, wskazuje na istotny wpływ innych czynników (np. lokalizacji, standardu), które różnicują ceny mieszkań o podobnej powierzchni.
-
 Z kolei wykres B pokazuje słabą, lecz istotną statystycznie ujemną korelację między metrażem a ceną za m² (ρ = −0,12; p < 0,001). Sugeruje to, że większe mieszkania są przeciętnie tańsze w przeliczeniu na metr kwadratowy, podczas gdy mniejsze lokale osiągają wyższe ceny jednostkowe. Efekt ten jest jednak niewielki, co oznacza, że metraż sam w sobie ma ograniczony wpływ na cenę za m².
+:::
 
 ## Wpływ odległości od centrum na cenę
 
@@ -803,6 +803,7 @@ ggscatterstats(
 ::: {style="text-align: justify;"}
 Wykres przedstawia zależność między odległością od centrum miasta a ceną za m². Zaobserwowana korelacja Spearmana jest bardzo słaba, lecz istotna statystycznie (ρ = 0,05; p < 0,001), co oznacza, że sama odległość od centrum ma niewielki wpływ na poziom cen.
 Rozkład punktów wskazuje na duże zróżnicowanie cen na każdej odległości - zarówno blisko centrum, jak i na obrzeżach występują mieszkania tanie i drogie. Sugeruje to, że o cenie w większym stopniu decydują inne czynniki lokalizacyjne, takie jak standard budynku, dostęp do infrastruktury czy charakter dzielnicy, a nie sama fizyczna odległość od centrum.
+:::
 
 ## Wpływ udogodnień na cenę
 
