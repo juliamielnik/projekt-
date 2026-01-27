@@ -21,6 +21,8 @@ library(naniar)
 library(VIM)
 ```
 
+Autorki: Julia Mielnik, Natalia Gładyś, Kornelia Kąkalec
+
 # Wstęp
 
 ::: {style="text-align: justify;"}
